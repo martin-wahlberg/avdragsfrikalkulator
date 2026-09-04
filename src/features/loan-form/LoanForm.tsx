@@ -42,7 +42,7 @@ export function LoanForm({
           value={principal}
           minimum={100000}
           maximum={15000000}
-          step={10000}
+          step={1000}
           unit="kroner"
           onChange={onPrincipalChange}
         />
