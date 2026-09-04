@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { compareRepaymentPlans } from './calculations'
+import { clampLoanParameters } from './constraints'
 import {
   buildSearchFromLoanParameters,
   readLoanParametersFromSearch,
@@ -21,21 +22,6 @@ export interface RepaymentPlanState {
   setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms: number) => void
   resetToDefaults: () => void
   comparison: RepaymentPlanComparison
-}
-
-function limitInterestOnlyPeriodToLoanTerm(
-  loanParameters: LoanParameters,
-): LoanParameters {
-  if (
-    loanParameters.numberOfInterestOnlyTerms <= loanParameters.numberOfTerms
-  ) {
-    return loanParameters
-  }
-
-  return {
-    ...loanParameters,
-    numberOfInterestOnlyTerms: loanParameters.numberOfTerms,
-  }
 }
 
 export function useRepaymentPlan(): RepaymentPlanState {
@@ -65,22 +51,20 @@ export function useRepaymentPlan(): RepaymentPlanState {
     loanParameters,
     comparison,
     setPrincipal: (principal) =>
-      setLoanParameters((previous) => ({ ...previous, principal })),
+      setLoanParameters((previous) =>
+        clampLoanParameters({ ...previous, principal }),
+      ),
     setAnnualInterestRatePercent: (annualInterestRatePercent) =>
-      setLoanParameters((previous) => ({
-        ...previous,
-        annualInterestRatePercent,
-      })),
+      setLoanParameters((previous) =>
+        clampLoanParameters({ ...previous, annualInterestRatePercent }),
+      ),
     setNumberOfTerms: (numberOfTerms) =>
       setLoanParameters((previous) =>
-        limitInterestOnlyPeriodToLoanTerm({ ...previous, numberOfTerms }),
+        clampLoanParameters({ ...previous, numberOfTerms }),
       ),
     setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms) =>
       setLoanParameters((previous) =>
-        limitInterestOnlyPeriodToLoanTerm({
-          ...previous,
-          numberOfInterestOnlyTerms,
-        }),
+        clampLoanParameters({ ...previous, numberOfInterestOnlyTerms }),
       ),
     resetToDefaults: () => setLoanParameters(DEFAULT_LOAN_PARAMETERS),
   }

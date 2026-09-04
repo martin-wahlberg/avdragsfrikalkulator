@@ -42,6 +42,12 @@
   gap: 8px;
 }
 
+@media (max-width: 640px) {
+  .calculator-page__table-controls {
+    width: 100%;
+  }
+}
+
 .calculator-page__footer {
   margin-top: 32px;
   color: var(--ink-muted);

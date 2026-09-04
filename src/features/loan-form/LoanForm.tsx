@@ -1,3 +1,4 @@
+import { maximumInterestOnlyTermsFor } from '../repayment-plan/constraints'
 import { Card } from '../ui/card/Card'
 import { NumberField } from '../ui/number-field/NumberField'
 import './LoanForm.css'
@@ -71,7 +72,7 @@ export function LoanForm({
           label="Avdragsfrihet"
           value={numberOfInterestOnlyTerms / MONTHS_PER_YEAR}
           minimum={0}
-          maximum={numberOfTerms / MONTHS_PER_YEAR}
+          maximum={maximumInterestOnlyTermsFor(numberOfTerms) / MONTHS_PER_YEAR}
           step={1}
           unit="år"
           helpText={

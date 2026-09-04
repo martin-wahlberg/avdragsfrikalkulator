@@ -60,19 +60,19 @@ describe('readLoanParametersFromSearch', () => {
     )
   })
 
-  it('never lets the interest only period exceed the loan term', () => {
+  it('always leaves twelve terms with repayment, even from a shared link', () => {
     const parameters = readLoanParametersFromSearch(
       'terminer=120&avdragsfrie=240',
       fallback,
     )
 
     expect(parameters.numberOfTerms).toBe(120)
-    expect(parameters.numberOfInterestOnlyTerms).toBe(120)
+    expect(parameters.numberOfInterestOnlyTerms).toBe(108)
   })
 
-  it('keeps the loan term at a minimum of one term', () => {
+  it('keeps the loan term at a minimum of twelve terms', () => {
     expect(readLoanParametersFromSearch('terminer=0', fallback).numberOfTerms).toBe(
-      1,
+      12,
     )
   })
 })

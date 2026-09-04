@@ -1,3 +1,4 @@
+import { clampLoanParameters } from './constraints'
 import type { LoanParameters } from './types'
 
 const PRINCIPAL_KEY = 'belop'
@@ -31,31 +32,24 @@ export function readLoanParametersFromSearch(
 ): LoanParameters {
   const searchParameters = new URLSearchParams(search)
 
-  const numberOfTerms = Math.max(
-    Math.round(readNumber(searchParameters, TERMS_KEY, fallback.numberOfTerms)),
-    1,
-  )
-  const numberOfInterestOnlyTerms = Math.min(
-    Math.round(
-      readNumber(
-        searchParameters,
-        INTEREST_ONLY_TERMS_KEY,
-        fallback.numberOfInterestOnlyTerms,
-      ),
-    ),
-    numberOfTerms,
-  )
-
-  return {
+  return clampLoanParameters({
     principal: readNumber(searchParameters, PRINCIPAL_KEY, fallback.principal),
     annualInterestRatePercent: readNumber(
       searchParameters,
       INTEREST_RATE_KEY,
       fallback.annualInterestRatePercent,
     ),
-    numberOfTerms,
-    numberOfInterestOnlyTerms,
-  }
+    numberOfTerms: readNumber(
+      searchParameters,
+      TERMS_KEY,
+      fallback.numberOfTerms,
+    ),
+    numberOfInterestOnlyTerms: readNumber(
+      searchParameters,
+      INTEREST_ONLY_TERMS_KEY,
+      fallback.numberOfInterestOnlyTerms,
+    ),
+  })
 }
 
 export function buildSearchFromLoanParameters(
