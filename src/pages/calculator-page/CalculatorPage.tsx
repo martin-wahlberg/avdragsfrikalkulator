@@ -161,7 +161,7 @@ export function CalculatorPage() {
 
           <RepaymentScheduleTable
             title="Nedbetalingsplan"
-            description="Avdragsfrie terminer er markert. Tallene er avrundet til øre, slik som i regnearket."
+            description="Avdragsfrie terminer er markert. Beløpene er vist med øre."
             columnLabels={schedule.columnLabels}
             rows={schedule.rows}
             totalRow={schedule.totalRow}
