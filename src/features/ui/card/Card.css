@@ -1,0 +1,25 @@
+.card {
+  container-type: inline-size;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-border);
+  border-radius: var(--radius-large);
+  padding: 20px;
+}
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.card__title {
+  font-size: 15px;
+}
+
+.card__description {
+  margin: 4px 0 0;
+  color: var(--ink-secondary);
+  font-size: 13px;
+}
