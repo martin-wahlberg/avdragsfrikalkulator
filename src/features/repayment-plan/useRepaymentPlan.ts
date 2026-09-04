@@ -7,8 +7,8 @@ import {
 import type { LoanParameters, RepaymentPlanComparison } from './types'
 
 export const DEFAULT_LOAN_PARAMETERS: LoanParameters = {
-  principal: 676721,
-  annualInterestRatePercent: 5.2,
+  principal: 3000000,
+  annualInterestRatePercent: 5,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
 }
