@@ -9,6 +9,7 @@ import type { LoanParameters } from './types'
 const parameters: LoanParameters = {
   principal: 3000000,
   annualInterestRatePercent: 5,
+  interestRateAfterInterestOnlyPeriodPercent: 5,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
 }
@@ -44,6 +45,7 @@ describe('clampLoanParameters', () => {
     const clamped = clampLoanParameters({
       principal: -1,
       annualInterestRatePercent: -5,
+      interestRateAfterInterestOnlyPeriodPercent: -5,
       numberOfTerms: 360,
       numberOfInterestOnlyTerms: -12,
     })

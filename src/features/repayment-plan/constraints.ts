@@ -26,6 +26,10 @@ export function clampLoanParameters(
       loanParameters.annualInterestRatePercent,
       0,
     ),
+    interestRateAfterInterestOnlyPeriodPercent: Math.max(
+      loanParameters.interestRateAfterInterestOnlyPeriodPercent,
+      0,
+    ),
     numberOfTerms,
     numberOfInterestOnlyTerms,
   }

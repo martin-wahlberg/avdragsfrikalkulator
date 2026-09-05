@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import './NumberField.css'
 
 interface NumberFieldProps {
@@ -23,19 +23,29 @@ export function NumberField({
   onChange,
 }: NumberFieldProps) {
   const fieldIdentifier = useId()
+  const [draftValue, setDraftValue] = useState<string | null>(null)
 
   function clampToRange(candidate: number): number {
     return Math.min(Math.max(candidate, minimum), maximum)
   }
 
   function handleChange(rawValue: string) {
-    const parsedValue = Number(rawValue)
+    setDraftValue(rawValue)
 
-    if (rawValue === '' || Number.isNaN(parsedValue)) {
+    if (rawValue === '') {
       return
     }
 
-    onChange(parsedValue)
+    const parsedValue = Number(rawValue)
+
+    if (!Number.isNaN(parsedValue)) {
+      onChange(parsedValue)
+    }
+  }
+
+  function handleBlur() {
+    setDraftValue(null)
+    onChange(clampToRange(value))
   }
 
   return (
@@ -50,12 +60,12 @@ export function NumberField({
           id={fieldIdentifier}
           type="number"
           inputMode="decimal"
-          value={value}
+          value={draftValue === null ? value : draftValue}
           min={minimum}
           max={maximum}
           step={step}
           onChange={(event) => handleChange(event.target.value)}
-          onBlur={() => onChange(clampToRange(value))}
+          onBlur={handleBlur}
         />
         <span className="number-field__unit">{unit}</span>
       </div>

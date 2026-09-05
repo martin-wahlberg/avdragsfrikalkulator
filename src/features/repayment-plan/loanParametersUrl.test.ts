@@ -8,6 +8,7 @@ import type { LoanParameters } from './types'
 const fallback: LoanParameters = {
   principal: 676721,
   annualInterestRatePercent: 5.2,
+  interestRateAfterInterestOnlyPeriodPercent: 5.2,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
 }
@@ -15,7 +16,7 @@ const fallback: LoanParameters = {
 describe('buildSearchFromLoanParameters', () => {
   it('writes every parameter to the query string', () => {
     expect(buildSearchFromLoanParameters(fallback)).toBe(
-      'belop=676721&rente=5.2&terminer=360&avdragsfrie=60',
+      'belop=676721&rente=5.2&nyrente=5.2&terminer=360&avdragsfrie=60',
     )
   })
 })
@@ -25,6 +26,7 @@ describe('readLoanParametersFromSearch', () => {
     const shared: LoanParameters = {
       principal: 4200000,
       annualInterestRatePercent: 4.35,
+      interestRateAfterInterestOnlyPeriodPercent: 3.9,
       numberOfTerms: 300,
       numberOfInterestOnlyTerms: 24,
     }

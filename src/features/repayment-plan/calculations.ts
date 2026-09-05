@@ -1,7 +1,5 @@
-import {
-  calculateMonthlyInterestRate,
-  calculatePayment,
-} from './annuity'
+import { calculateMonthlyInterestRate, calculatePayment } from './annuity'
+import { findEqualPaymentInterestRatePercent } from './equalPaymentRate'
 import type {
   LoanParameters,
   RepaymentPlan,
@@ -24,13 +22,18 @@ function summarizeTerms(terms: Term[]): RepaymentPlan {
 export function calculatePlanWithoutInterestOnlyPeriod({
   principal,
   annualInterestRatePercent,
+  interestRateAfterInterestOnlyPeriodPercent,
   numberOfTerms,
+  numberOfInterestOnlyTerms,
 }: LoanParameters): RepaymentPlan {
-  const monthlyInterestRate = calculateMonthlyInterestRate(
+  const rateBeforeChange = calculateMonthlyInterestRate(
     annualInterestRatePercent,
   )
-  const fixedPayment = calculatePayment(
-    monthlyInterestRate,
+  const rateAfterChange = calculateMonthlyInterestRate(
+    interestRateAfterInterestOnlyPeriodPercent,
+  )
+  const paymentBeforeChange = calculatePayment(
+    rateBeforeChange,
     numberOfTerms,
     principal,
   )
@@ -38,14 +41,43 @@ export function calculatePlanWithoutInterestOnlyPeriod({
   const terms: Term[] = []
   let remainingDebt = principal
 
-  for (let termNumber = 1; termNumber <= numberOfTerms; termNumber += 1) {
-    const interest = remainingDebt * monthlyInterestRate
-    const principalRepayment = fixedPayment - interest
+  for (
+    let termNumber = 1;
+    termNumber <= numberOfInterestOnlyTerms;
+    termNumber += 1
+  ) {
+    const interest = remainingDebt * rateBeforeChange
+    const principalRepayment = paymentBeforeChange - interest
     remainingDebt -= principalRepayment
 
     terms.push({
       termNumber,
-      payment: fixedPayment,
+      payment: paymentBeforeChange,
+      interest,
+      principalRepayment,
+      remainingDebt,
+      isInterestOnly: false,
+    })
+  }
+
+  const paymentAfterChange = calculatePayment(
+    rateAfterChange,
+    numberOfTerms - numberOfInterestOnlyTerms,
+    remainingDebt,
+  )
+
+  for (
+    let termNumber = numberOfInterestOnlyTerms + 1;
+    termNumber <= numberOfTerms;
+    termNumber += 1
+  ) {
+    const interest = remainingDebt * rateAfterChange
+    const principalRepayment = paymentAfterChange - interest
+    remainingDebt -= principalRepayment
+
+    terms.push({
+      termNumber,
+      payment: paymentAfterChange,
       interest,
       principalRepayment,
       remainingDebt,
@@ -59,16 +91,19 @@ export function calculatePlanWithoutInterestOnlyPeriod({
 export function calculatePlanWithInterestOnlyPeriod({
   principal,
   annualInterestRatePercent,
+  interestRateAfterInterestOnlyPeriodPercent,
   numberOfTerms,
   numberOfInterestOnlyTerms,
 }: LoanParameters): RepaymentPlan {
-  const monthlyInterestRate = calculateMonthlyInterestRate(
+  const rateBeforeChange = calculateMonthlyInterestRate(
     annualInterestRatePercent,
   )
-  const numberOfTermsWithRepayment = numberOfTerms - numberOfInterestOnlyTerms
-  const paymentAfterInterestOnlyPeriod = calculatePayment(
-    monthlyInterestRate,
-    numberOfTermsWithRepayment,
+  const rateAfterChange = calculateMonthlyInterestRate(
+    interestRateAfterInterestOnlyPeriodPercent,
+  )
+  const paymentAfterChange = calculatePayment(
+    rateAfterChange,
+    numberOfTerms - numberOfInterestOnlyTerms,
     principal,
   )
 
@@ -76,11 +111,12 @@ export function calculatePlanWithInterestOnlyPeriod({
   let remainingDebt = principal
 
   for (let termNumber = 1; termNumber <= numberOfTerms; termNumber += 1) {
-    const interest = remainingDebt * monthlyInterestRate
     const isInterestOnly = termNumber <= numberOfInterestOnlyTerms
+    const interest =
+      remainingDebt * (isInterestOnly ? rateBeforeChange : rateAfterChange)
     const principalRepayment = isInterestOnly
       ? 0
-      : paymentAfterInterestOnlyPeriod - interest
+      : paymentAfterChange - interest
     remainingDebt -= principalRepayment
 
     terms.push({
@@ -99,11 +135,20 @@ export function calculatePlanWithInterestOnlyPeriod({
 export function compareRepaymentPlans(
   loanParameters: LoanParameters,
 ): RepaymentPlanComparison {
-  const { principal, annualInterestRatePercent, numberOfTerms } = loanParameters
-  const numberOfTermsWithRepayment =
-    numberOfTerms - loanParameters.numberOfInterestOnlyTerms
-  const monthlyInterestRate = calculateMonthlyInterestRate(
+  const {
+    principal,
     annualInterestRatePercent,
+    interestRateAfterInterestOnlyPeriodPercent,
+    numberOfTerms,
+    numberOfInterestOnlyTerms,
+  } = loanParameters
+
+  const numberOfTermsWithRepayment = numberOfTerms - numberOfInterestOnlyTerms
+  const rateBeforeChange = calculateMonthlyInterestRate(
+    annualInterestRatePercent,
+  )
+  const rateAfterChange = calculateMonthlyInterestRate(
+    interestRateAfterInterestOnlyPeriodPercent,
   )
 
   const planWithoutInterestOnlyPeriod =
@@ -112,15 +157,26 @@ export function compareRepaymentPlans(
     calculatePlanWithInterestOnlyPeriod(loanParameters)
 
   const paymentWithoutInterestOnlyPeriod = calculatePayment(
-    monthlyInterestRate,
+    rateBeforeChange,
     numberOfTerms,
     principal,
   )
-  const paymentDuringInterestOnlyPeriod = principal * monthlyInterestRate
+  const paymentDuringInterestOnlyPeriod = principal * rateBeforeChange
   const paymentAfterInterestOnlyPeriod = calculatePayment(
-    monthlyInterestRate,
+    rateAfterChange,
     numberOfTermsWithRepayment,
     principal,
+  )
+
+  const debtWhenRateChanges =
+    numberOfInterestOnlyTerms === 0
+      ? principal
+      : planWithoutInterestOnlyPeriod.terms[numberOfInterestOnlyTerms - 1]
+          .remainingDebt
+  const paymentAfterRateChangeWithoutInterestOnlyPeriod = calculatePayment(
+    rateAfterChange,
+    numberOfTermsWithRepayment,
+    debtWhenRateChanges,
   )
 
   return {
@@ -129,13 +185,18 @@ export function compareRepaymentPlans(
     paymentWithoutInterestOnlyPeriod,
     paymentDuringInterestOnlyPeriod,
     paymentAfterInterestOnlyPeriod,
+    paymentAfterRateChangeWithoutInterestOnlyPeriod,
     monthlySavingDuringInterestOnlyPeriod:
       paymentWithoutInterestOnlyPeriod - paymentDuringInterestOnlyPeriod,
     monthlyIncreaseAfterInterestOnlyPeriod:
-      paymentAfterInterestOnlyPeriod - paymentWithoutInterestOnlyPeriod,
+      paymentAfterInterestOnlyPeriod -
+      paymentAfterRateChangeWithoutInterestOnlyPeriod,
     additionalCostOfInterestOnlyPeriod:
       planWithInterestOnlyPeriod.totalCost -
       planWithoutInterestOnlyPeriod.totalCost,
     numberOfTermsWithRepayment,
+    equalPaymentInterestRatePercent: findEqualPaymentInterestRatePercent(
+      loanParameters,
+    ),
   }
 }

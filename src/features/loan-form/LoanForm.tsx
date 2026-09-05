@@ -8,10 +8,14 @@ const MONTHS_PER_YEAR = 12
 interface LoanFormProps {
   principal: number
   annualInterestRatePercent: number
+  interestRateAfterInterestOnlyPeriodPercent: number
   numberOfTerms: number
   numberOfInterestOnlyTerms: number
   onPrincipalChange: (principal: number) => void
   onAnnualInterestRatePercentChange: (annualInterestRatePercent: number) => void
+  onInterestRateAfterInterestOnlyPeriodPercentChange: (
+    interestRateAfterInterestOnlyPeriodPercent: number,
+  ) => void
   onNumberOfTermsChange: (numberOfTerms: number) => void
   onNumberOfInterestOnlyTermsChange: (numberOfInterestOnlyTerms: number) => void
   onReset: () => void
@@ -20,10 +24,12 @@ interface LoanFormProps {
 export function LoanForm({
   principal,
   annualInterestRatePercent,
+  interestRateAfterInterestOnlyPeriodPercent,
   numberOfTerms,
   numberOfInterestOnlyTerms,
   onPrincipalChange,
   onAnnualInterestRatePercentChange,
+  onInterestRateAfterInterestOnlyPeriodPercentChange,
   onNumberOfTermsChange,
   onNumberOfInterestOnlyTermsChange,
   onReset,
@@ -59,6 +65,21 @@ export function LoanForm({
         />
 
         <NumberField
+          label="Rente etter avdragsfri periode"
+          value={interestRateAfterInterestOnlyPeriodPercent}
+          minimum={0}
+          maximum={15}
+          step={0.1}
+          unit="prosent"
+          helpText={
+            numberOfInterestOnlyTerms === 0
+              ? 'Gjelder fra første termin når du ikke har avdragsfrihet.'
+              : `Gjelder fra termin ${numberOfInterestOnlyTerms + 1} i begge scenarioene.`
+          }
+          onChange={onInterestRateAfterInterestOnlyPeriodPercentChange}
+        />
+
+        <NumberField
           label="Løpetid"
           value={numberOfTerms / MONTHS_PER_YEAR}
           minimum={1}
@@ -77,7 +98,7 @@ export function LoanForm({
           unit="år"
           helpText={
             numberOfInterestOnlyTerms === 0
-              ? 'Ingen avdragsfrihet — de to planene blir like.'
+              ? 'Uten avdragsfrie terminer blir de to planene like.'
               : undefined
           }
           onChange={(years) =>

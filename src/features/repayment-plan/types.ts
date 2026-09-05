@@ -1,6 +1,7 @@
 export interface LoanParameters {
   principal: number
   annualInterestRatePercent: number
+  interestRateAfterInterestOnlyPeriodPercent: number
   numberOfTerms: number
   numberOfInterestOnlyTerms: number
 }
@@ -26,8 +27,10 @@ export interface RepaymentPlanComparison {
   paymentWithoutInterestOnlyPeriod: number
   paymentDuringInterestOnlyPeriod: number
   paymentAfterInterestOnlyPeriod: number
+  paymentAfterRateChangeWithoutInterestOnlyPeriod: number
   monthlySavingDuringInterestOnlyPeriod: number
   monthlyIncreaseAfterInterestOnlyPeriod: number
   additionalCostOfInterestOnlyPeriod: number
   numberOfTermsWithRepayment: number
+  equalPaymentInterestRatePercent: number | null
 }

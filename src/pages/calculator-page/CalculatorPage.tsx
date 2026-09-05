@@ -25,17 +25,10 @@ const COST_VIEW_OPTIONS = [
   { value: 'payment', label: 'Terminbeløp' },
 ] as const
 
-const PLAN_OPTIONS = [
-  { value: 'withInterestOnly', label: 'Med avdragsfrihet' },
-  { value: 'withoutInterestOnly', label: 'Uten avdragsfrihet' },
-] as const
-
 const GROUPING_OPTIONS = [
   { value: 'perMonth', label: 'Per måned' },
   { value: 'perYear', label: 'Per år' },
 ] as const
-
-type PlanChoice = (typeof PLAN_OPTIONS)[number]['value']
 
 function formatYearTick(pointIndex: number): string {
   return `${pointIndex / 12} år`
@@ -51,23 +44,21 @@ export function CalculatorPage() {
     comparison,
     setPrincipal,
     setAnnualInterestRatePercent,
+    setInterestRateAfterInterestOnlyPeriodPercent,
     setNumberOfTerms,
     setNumberOfInterestOnlyTerms,
     resetToDefaults,
   } = useRepaymentPlan()
 
   const [costView, setCostView] = useState<CostChartView>('accumulatedInterest')
-  const [selectedPlan, setSelectedPlan] =
-    useState<PlanChoice>('withInterestOnly')
   const [grouping, setGrouping] = useState<ScheduleGrouping>('perMonth')
 
   const keyFigures = useKeyFigures(loanParameters, comparison)
   const remainingDebtChart = useRemainingDebtChart(loanParameters, comparison)
   const costChart = useCostChart(loanParameters, comparison, costView)
   const schedule = useScheduleRows(
-    selectedPlan === 'withInterestOnly'
-      ? comparison.planWithInterestOnlyPeriod
-      : comparison.planWithoutInterestOnlyPeriod,
+    comparison.planWithoutInterestOnlyPeriod,
+    comparison.planWithInterestOnlyPeriod,
     grouping,
   )
 
@@ -91,12 +82,18 @@ export function CalculatorPage() {
           <LoanForm
             principal={loanParameters.principal}
             annualInterestRatePercent={loanParameters.annualInterestRatePercent}
+            interestRateAfterInterestOnlyPeriodPercent={
+              loanParameters.interestRateAfterInterestOnlyPeriodPercent
+            }
             numberOfTerms={loanParameters.numberOfTerms}
             numberOfInterestOnlyTerms={
               loanParameters.numberOfInterestOnlyTerms
             }
             onPrincipalChange={setPrincipal}
             onAnnualInterestRatePercentChange={setAnnualInterestRatePercent}
+            onInterestRateAfterInterestOnlyPeriodPercentChange={
+              setInterestRateAfterInterestOnlyPeriodPercent
+            }
             onNumberOfTermsChange={setNumberOfTerms}
             onNumberOfInterestOnlyTermsChange={setNumberOfInterestOnlyTerms}
             onReset={resetToDefaults}
@@ -161,25 +158,17 @@ export function CalculatorPage() {
 
           <RepaymentScheduleTable
             title="Nedbetalingsplan"
-            description="Avdragsfrie terminer er markert. Beløpene er vist med øre."
+            description="Begge planene side om side. De skraverte cellene er terminene uten avdrag. Beløpene er vist med øre."
             columnLabels={schedule.columnLabels}
             rows={schedule.rows}
             totalRow={schedule.totalRow}
             controls={
-              <div className="calculator-page__table-controls">
-                <SegmentedControl
-                  options={PLAN_OPTIONS}
-                  selectedValue={selectedPlan}
-                  ariaLabel="Velg hvilken plan tabellen viser"
-                  onChange={setSelectedPlan}
-                />
-                <SegmentedControl
-                  options={GROUPING_OPTIONS}
-                  selectedValue={grouping}
-                  ariaLabel="Velg oppløsning i tabellen"
-                  onChange={setGrouping}
-                />
-              </div>
+              <SegmentedControl
+                options={GROUPING_OPTIONS}
+                selectedValue={grouping}
+                ariaLabel="Velg oppløsning i tabellen"
+                onChange={setGrouping}
+              />
             }
           />
         </div>

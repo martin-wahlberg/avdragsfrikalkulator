@@ -33,6 +33,15 @@ export function formatCompactNumber(amount: number): string {
   return compactNumberFormatter.format(amount)
 }
 
+const percentFormatter = new Intl.NumberFormat('nb-NO', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+export function formatPercent(percentValue: number): string {
+  return `${percentFormatter.format(percentValue)} %`
+}
+
 export function formatInteger(value: number): string {
   return integerFormatter.format(value)
 }

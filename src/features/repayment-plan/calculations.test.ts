@@ -5,6 +5,7 @@ import type { LoanParameters, Term } from './types'
 const parametersFromSourceSpreadsheet: LoanParameters = {
   principal: 676721,
   annualInterestRatePercent: 5.2,
+  interestRateAfterInterestOnlyPeriodPercent: 5.2,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
 }
@@ -97,6 +98,7 @@ describe('compareRepaymentPlans at the boundaries', () => {
     const comparison = compareRepaymentPlans({
       principal: 120000,
       annualInterestRatePercent: 0,
+      interestRateAfterInterestOnlyPeriodPercent: 0,
       numberOfTerms: 12,
       numberOfInterestOnlyTerms: 0,
     })

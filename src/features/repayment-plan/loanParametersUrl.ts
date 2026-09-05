@@ -3,6 +3,7 @@ import type { LoanParameters } from './types'
 
 const PRINCIPAL_KEY = 'belop'
 const INTEREST_RATE_KEY = 'rente'
+const INTEREST_RATE_AFTER_KEY = 'nyrente'
 const TERMS_KEY = 'terminer'
 const INTEREST_ONLY_TERMS_KEY = 'avdragsfrie'
 
@@ -39,6 +40,11 @@ export function readLoanParametersFromSearch(
       INTEREST_RATE_KEY,
       fallback.annualInterestRatePercent,
     ),
+    interestRateAfterInterestOnlyPeriodPercent: readNumber(
+      searchParameters,
+      INTEREST_RATE_AFTER_KEY,
+      fallback.interestRateAfterInterestOnlyPeriodPercent,
+    ),
     numberOfTerms: readNumber(
       searchParameters,
       TERMS_KEY,
@@ -61,6 +67,10 @@ export function buildSearchFromLoanParameters(
   searchParameters.set(
     INTEREST_RATE_KEY,
     String(loanParameters.annualInterestRatePercent),
+  )
+  searchParameters.set(
+    INTEREST_RATE_AFTER_KEY,
+    String(loanParameters.interestRateAfterInterestOnlyPeriodPercent),
   )
   searchParameters.set(TERMS_KEY, String(loanParameters.numberOfTerms))
   searchParameters.set(
