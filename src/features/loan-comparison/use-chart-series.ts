@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
-import type { LineChartSeries } from '../../features/ui/line-chart/LineChart'
+import type { LineChartSeries } from '../ui/line-chart/LineChart'
 import type {
   LoanParameters,
   RepaymentPlanComparison,
   Term,
-} from '../../features/repayment-plan/types'
+} from '../repayment-plan/types'
 
 const WITHOUT_INTEREST_ONLY_COLOR = '--series-without-interest-only'
 const WITH_INTEREST_ONLY_COLOR = '--series-with-interest-only'

@@ -1,9 +1,9 @@
-.key-figures {
+.keyFigures {
   display: grid;
   gap: 16px;
 }
 
-.key-figures__headline {
+.headline {
   background: var(--surface-card);
   border: 1px solid var(--hairline-border);
   border-left: 3px solid var(--series-with-interest-only);
@@ -11,13 +11,13 @@
   padding: 20px 24px;
 }
 
-.key-figures__headline-label {
+.headlineLabel {
   margin: 0;
   font-size: 13px;
   color: var(--ink-secondary);
 }
 
-.key-figures__headline-value {
+.headlineValue {
   margin: 4px 0 0;
   font-size: 40px;
   font-weight: 600;
@@ -25,49 +25,49 @@
   line-height: 1.1;
 }
 
-.key-figures__headline-note {
+.headlineNote {
   margin: 8px 0 0;
   max-width: 62ch;
   font-size: 13px;
   color: var(--ink-secondary);
 }
 
-.key-figures__grid {
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 12px;
 }
 
-.key-figures__figure {
+.figure {
   background: var(--surface-card);
   border: 1px solid var(--hairline-border);
   border-radius: var(--radius-large);
   padding: 16px;
 }
 
-.key-figures__label {
+.label {
   margin: 0;
   font-size: 12px;
   color: var(--ink-secondary);
 }
 
-.key-figures__value {
+.value {
   margin: 6px 0 0;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-.key-figures__note {
+.note {
   margin: 4px 0 0;
   font-size: 12px;
   color: var(--ink-muted);
 }
 
-.key-figures__note--positive {
+.notePositive {
   color: var(--text-positive);
 }
 
-.key-figures__note--negative {
+.noteNegative {
   color: var(--text-negative);
 }

@@ -1,16 +1,16 @@
-.loan-form__fields {
+.fields {
   display: grid;
   gap: 18px 20px;
   align-items: start;
 }
 
 @container (min-width: 440px) {
-  .loan-form__fields {
+  .fields {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.loan-form__reset {
+.reset {
   padding: 6px 12px;
   border: 1px solid var(--hairline-border);
   border-radius: 999px;
@@ -21,7 +21,7 @@
   cursor: pointer;
 }
 
-.loan-form__reset:hover {
+.reset:hover {
   color: var(--ink-primary);
   border-color: var(--axis-line);
 }

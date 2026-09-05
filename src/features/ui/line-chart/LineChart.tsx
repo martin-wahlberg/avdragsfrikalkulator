@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { PointerEvent } from 'react'
-import './LineChart.css'
+import styles from './line-chart.module.css'
 
 const CHART_WIDTH = 860
 const CHART_HEIGHT = 380
@@ -84,12 +84,12 @@ export function LineChart({
   )
 
   return (
-    <div className="line-chart">
-      <ul className="line-chart__legend">
+    <div>
+      <ul className={styles.legend}>
         {series.map((oneSeries) => (
-          <li className="line-chart__legend-item" key={oneSeries.name}>
+          <li className={styles.legendItem} key={oneSeries.name}>
             <span
-              className="line-chart__swatch"
+              className={styles.swatch}
               style={{ background: `var(${oneSeries.colorVariableName})` }}
             />
             {oneSeries.name}
@@ -97,16 +97,16 @@ export function LineChart({
         ))}
       </ul>
 
-      <div className="line-chart__plot">
+      <div className={styles.plot}>
         <svg
-          className="line-chart__svg"
+          className={styles.svg}
           viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
           role="img"
           aria-label={ariaLabel}
         >
           {shadedPointCount > 0 ? (
             <rect
-              className="line-chart__band"
+              className={styles.band}
               x={MARGIN_LEFT}
               y={MARGIN_TOP}
               width={horizontalPositionFor(shadedPointCount) - MARGIN_LEFT}
@@ -117,14 +117,14 @@ export function LineChart({
           {gridlineValues.map((gridlineValue) => (
             <g key={gridlineValue}>
               <line
-                className="line-chart__gridline"
+                className={styles.gridline}
                 x1={MARGIN_LEFT}
                 x2={MARGIN_LEFT + PLOT_WIDTH}
                 y1={verticalPositionFor(gridlineValue)}
                 y2={verticalPositionFor(gridlineValue)}
               />
               <text
-                className="line-chart__axis-label line-chart__axis-label--vertical"
+                className={`${styles.axisLabel} ${styles.axisLabelVertical}`}
                 x={MARGIN_LEFT - 12}
                 y={verticalPositionFor(gridlineValue) + 4}
               >
@@ -136,7 +136,7 @@ export function LineChart({
           {tickPointIndexes.map((pointIndex) => (
             <text
               key={pointIndex}
-              className="line-chart__axis-label"
+              className={styles.axisLabel}
               x={horizontalPositionFor(pointIndex)}
               y={MARGIN_TOP + PLOT_HEIGHT + 24}
               textAnchor="middle"
@@ -146,7 +146,7 @@ export function LineChart({
           ))}
 
           <line
-            className="line-chart__baseline"
+            className={styles.baseline}
             x1={MARGIN_LEFT}
             x2={MARGIN_LEFT + PLOT_WIDTH}
             y1={MARGIN_TOP + PLOT_HEIGHT}
@@ -156,7 +156,7 @@ export function LineChart({
           {series.map((oneSeries) => (
             <path
               key={oneSeries.name}
-              className="line-chart__line"
+              className={styles.line}
               style={{ stroke: `var(${oneSeries.colorVariableName})` }}
               d={buildLinePath(oneSeries.values)}
             />
@@ -165,7 +165,7 @@ export function LineChart({
           {hoveredPointIndex === null ? null : (
             <g>
               <line
-                className="line-chart__crosshair"
+                className={styles.crosshair}
                 x1={horizontalPositionFor(hoveredPointIndex)}
                 x2={horizontalPositionFor(hoveredPointIndex)}
                 y1={MARGIN_TOP}
@@ -174,7 +174,7 @@ export function LineChart({
               {series.map((oneSeries) => (
                 <circle
                   key={oneSeries.name}
-                  className="line-chart__marker"
+                  className={styles.marker}
                   style={{ fill: `var(${oneSeries.colorVariableName})` }}
                   cx={horizontalPositionFor(hoveredPointIndex)}
                   cy={verticalPositionFor(oneSeries.values[hoveredPointIndex])}
@@ -185,7 +185,7 @@ export function LineChart({
           )}
 
           <rect
-            className="line-chart__hover-target"
+            className={styles.hoverTarget}
             x={MARGIN_LEFT}
             y={MARGIN_TOP}
             width={PLOT_WIDTH}
@@ -197,18 +197,18 @@ export function LineChart({
 
         {hoveredPointIndex === null ? null : (
           <div
-            className="line-chart__tooltip"
+            className={styles.tooltip}
             style={{
               left: `${(horizontalPositionFor(hoveredPointIndex) / CHART_WIDTH) * 100}%`,
             }}
           >
-            <p className="line-chart__tooltip-title">
+            <p className={styles.tooltipTitle}>
               {formatPointLabel(hoveredPointIndex)}
             </p>
             {series.map((oneSeries) => (
-              <p className="line-chart__tooltip-row" key={oneSeries.name}>
+              <p className={styles.tooltipRow} key={oneSeries.name}>
                 <span
-                  className="line-chart__swatch"
+                  className={styles.swatch}
                   style={{ background: `var(${oneSeries.colorVariableName})` }}
                 />
                 {formatValue(oneSeries.values[hoveredPointIndex])}

@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import './NumberField.css'
+import styles from './number-field.module.css'
 
 interface NumberFieldProps {
   label: string
@@ -49,14 +49,14 @@ export function NumberField({
   }
 
   return (
-    <div className="number-field">
-      <label className="number-field__label" htmlFor={fieldIdentifier}>
+    <div>
+      <label className={styles.label} htmlFor={fieldIdentifier}>
         {label}
       </label>
 
-      <div className="number-field__control">
+      <div className={styles.control}>
         <input
-          className="number-field__input"
+          className={styles.input}
           id={fieldIdentifier}
           type="number"
           inputMode="decimal"
@@ -67,11 +67,11 @@ export function NumberField({
           onChange={(event) => handleChange(event.target.value)}
           onBlur={handleBlur}
         />
-        <span className="number-field__unit">{unit}</span>
+        <span className={styles.unit}>{unit}</span>
       </div>
 
       {helpText === undefined ? null : (
-        <p className="number-field__help-text">{helpText}</p>
+        <p className={styles.helpText}>{helpText}</p>
       )}
     </div>
   )

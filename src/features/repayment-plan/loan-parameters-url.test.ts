@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildSearchFromLoanParameters,
   readLoanParametersFromSearch,
-} from './loanParametersUrl'
+} from './loan-parameters-url'
 import type { LoanParameters } from './types'
 
 const fallback: LoanParameters = {
@@ -48,6 +48,13 @@ describe('readLoanParametersFromSearch', () => {
       ...fallback,
       principal: 2000000,
     })
+  })
+
+  it('lar renta stå uendret når lenken bare oppgir nominell rente', () => {
+    const parameters = readLoanParametersFromSearch('rente=3.4', fallback)
+
+    expect(parameters.annualInterestRatePercent).toBe(3.4)
+    expect(parameters.interestRateAfterInterestOnlyPeriodPercent).toBe(3.4)
   })
 
   it('ignores values that are not numbers', () => {

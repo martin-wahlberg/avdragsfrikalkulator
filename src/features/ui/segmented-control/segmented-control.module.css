@@ -1,4 +1,4 @@
-.segmented-control {
+.control {
   display: inline-flex;
   padding: 2px;
   border: 1px solid var(--hairline-border);
@@ -6,7 +6,7 @@
   background: var(--surface-subtle);
 }
 
-.segmented-control__segment {
+.segment {
   padding: 5px 12px;
   border: none;
   border-radius: 999px;
@@ -18,19 +18,19 @@
   white-space: nowrap;
 }
 
-.segmented-control__segment[aria-pressed='true'] {
+.segment[aria-pressed='true'] {
   background: var(--surface-card);
   color: var(--ink-primary);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 640px) {
-  .segmented-control {
+  .control {
     display: flex;
     width: 100%;
   }
 
-  .segmented-control__segment {
+  .segment {
     flex: 1;
     padding: 6px 8px;
     text-align: center;

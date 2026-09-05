@@ -1,4 +1,4 @@
-import './SegmentedControl.css'
+import styles from './segmented-control.module.css'
 
 export interface SegmentedControlOption<Value extends string> {
   value: Value
@@ -19,12 +19,12 @@ export function SegmentedControl<Value extends string>({
   onChange,
 }: SegmentedControlProps<Value>) {
   return (
-    <div className="segmented-control" role="group" aria-label={ariaLabel}>
+    <div className={styles.control} role="group" aria-label={ariaLabel}>
       {options.map((option) => (
         <button
           key={option.value}
           type="button"
-          className="segmented-control__segment"
+          className={styles.segment}
           aria-pressed={option.value === selectedValue}
           onClick={() => onChange(option.value)}
         >

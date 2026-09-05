@@ -6,7 +6,7 @@
   padding: 20px;
 }
 
-.card__header {
+.header {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -15,11 +15,11 @@
   margin-bottom: 18px;
 }
 
-.card__title {
+.title {
   font-size: 15px;
 }
 
-.card__description {
+.description {
   margin: 4px 0 0;
   color: var(--ink-secondary);
   font-size: 13px;

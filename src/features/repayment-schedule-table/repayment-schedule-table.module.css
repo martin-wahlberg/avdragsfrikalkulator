@@ -1,25 +1,25 @@
-.repayment-schedule-table__scroll {
+.scroll {
   max-height: 520px;
   overflow: auto;
   border: 1px solid var(--hairline-border);
   border-radius: var(--radius-small);
 }
 
-.repayment-schedule-table__table {
+.table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
 
-.repayment-schedule-table__table th,
-.repayment-schedule-table__table td {
+.table th,
+.table td {
   padding: 6px 12px;
   text-align: right;
   white-space: nowrap;
 }
 
-.repayment-schedule-table__table thead th {
+.table thead th {
   position: sticky;
   top: 0;
   z-index: 1;
@@ -32,49 +32,49 @@
   padding-bottom: 8px;
 }
 
-.repayment-schedule-table__table thead th:first-child,
-.repayment-schedule-table__table thead th:nth-child(2) {
+.table thead th:first-child,
+.table thead th:nth-child(2) {
   text-align: left;
 }
 
-.repayment-schedule-table__group th {
+.group th {
   text-align: left;
   font-weight: 500;
   vertical-align: top;
   padding-top: 8px;
 }
 
-.repayment-schedule-table__group + .repayment-schedule-table__group th,
-.repayment-schedule-table__group + .repayment-schedule-table__group td {
+.group + .group th,
+.group + .group td {
   border-top: 1px solid var(--gridline);
 }
 
-.repayment-schedule-table__subrow--highlighted td {
+.subrowHighlighted td {
   background: var(--interest-only-band);
 }
 
-.repayment-schedule-table__table td.repayment-schedule-table__plan {
+.table td.plan {
   text-align: left;
   color: var(--ink-secondary);
   font-size: 12px;
 }
 
-.repayment-schedule-table__table tfoot th,
-.repayment-schedule-table__table tfoot td {
+.table tfoot th,
+.table tfoot td {
   background: var(--surface-card);
   font-weight: 600;
 }
 
-.repayment-schedule-table__table tfoot tr:first-child th,
-.repayment-schedule-table__table tfoot tr:first-child td {
+.table tfoot tr:first-child th,
+.table tfoot tr:first-child td {
   border-top: 1px solid var(--axis-line);
 }
 
-.repayment-schedule-table__table tfoot th {
+.table tfoot th {
   text-align: left;
   vertical-align: top;
 }
 
-.repayment-schedule-table__table tfoot .repayment-schedule-table__plan {
+.table tfoot td.plan {
   font-weight: 500;
 }

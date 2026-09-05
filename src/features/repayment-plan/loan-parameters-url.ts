@@ -32,18 +32,19 @@ export function readLoanParametersFromSearch(
   fallback: LoanParameters,
 ): LoanParameters {
   const searchParameters = new URLSearchParams(search)
+  const annualInterestRatePercent = readNumber(
+    searchParameters,
+    INTEREST_RATE_KEY,
+    fallback.annualInterestRatePercent,
+  )
 
   return clampLoanParameters({
     principal: readNumber(searchParameters, PRINCIPAL_KEY, fallback.principal),
-    annualInterestRatePercent: readNumber(
-      searchParameters,
-      INTEREST_RATE_KEY,
-      fallback.annualInterestRatePercent,
-    ),
+    annualInterestRatePercent,
     interestRateAfterInterestOnlyPeriodPercent: readNumber(
       searchParameters,
       INTEREST_RATE_AFTER_KEY,
-      fallback.interestRateAfterInterestOnlyPeriodPercent,
+      annualInterestRatePercent,
     ),
     numberOfTerms: readNumber(
       searchParameters,

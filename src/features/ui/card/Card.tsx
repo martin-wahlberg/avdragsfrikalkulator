@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import './Card.css'
+import styles from './card.module.css'
 
 interface CardProps {
   title?: string
@@ -12,15 +12,15 @@ export function Card({ title, description, action, children }: CardProps) {
   const hasHeader = title !== undefined || action !== undefined
 
   return (
-    <section className="card">
+    <section className={styles.card}>
       {hasHeader ? (
-        <header className="card__header">
+        <header className={styles.header}>
           <div>
             {title === undefined ? null : (
-              <h2 className="card__title">{title}</h2>
+              <h2 className={styles.title}>{title}</h2>
             )}
             {description === undefined ? null : (
-              <p className="card__description">{description}</p>
+              <p className={styles.description}>{description}</p>
             )}
           </div>
           {action}

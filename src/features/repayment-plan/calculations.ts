@@ -1,5 +1,5 @@
 import { calculateMonthlyInterestRate, calculatePayment } from './annuity'
-import { findEqualPaymentInterestRatePercent } from './equalPaymentRate'
+import { findEqualPaymentInterestRatePercent } from './equal-payment-rate'
 import type {
   LoanParameters,
   RepaymentPlan,

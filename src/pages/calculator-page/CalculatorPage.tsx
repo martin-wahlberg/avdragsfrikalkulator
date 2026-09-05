@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { KeyFigures } from '../../features/key-figures/KeyFigures'
 import { LoanForm } from '../../features/loan-form/LoanForm'
-import { useRepaymentPlan } from '../../features/repayment-plan/useRepaymentPlan'
+import { useRepaymentPlan } from '../../features/repayment-plan/use-repayment-plan'
 import { RepaymentScheduleTable } from '../../features/repayment-schedule-table/RepaymentScheduleTable'
 import { Card } from '../../features/ui/card/Card'
 import { LineChart } from '../../features/ui/line-chart/LineChart'
@@ -10,13 +10,13 @@ import {
   formatCompactNumber,
   formatCurrency,
   formatTermsAsYearsAndMonths,
-} from '../../lib/formatting'
-import { useCostChart, useRemainingDebtChart } from './useChartSeries'
-import type { CostChartView } from './useChartSeries'
-import { useKeyFigures } from './useKeyFigures'
-import { useScheduleRows } from './useScheduleRows'
-import type { ScheduleGrouping } from './useScheduleRows'
-import './CalculatorPage.css'
+} from '../../features/formatting/formatting'
+import { useCostChart, useRemainingDebtChart } from '../../features/loan-comparison/use-chart-series'
+import type { CostChartView } from '../../features/loan-comparison/use-chart-series'
+import { useKeyFigures } from '../../features/loan-comparison/use-key-figures'
+import { useScheduleRows } from '../../features/loan-comparison/use-schedule-rows'
+import type { ScheduleGrouping } from '../../features/loan-comparison/use-schedule-rows'
+import styles from './calculator-page.module.css'
 
 const MONTHS_PER_TICK = 60
 
@@ -68,17 +68,17 @@ export function CalculatorPage() {
       : 'Uten avdragsfrie terminer er de to planene identiske.'
 
   return (
-    <div className="calculator-page">
-      <header className="calculator-page__header">
-        <h1 className="calculator-page__title">Avdragsfrikalkulator</h1>
-        <p className="calculator-page__subtitle">
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Avdragsfrikalkulator</h1>
+        <p className={styles.subtitle}>
           Sammenlign terminbeløp, restgjeld og samlet rentekostnad med og uten
           avdragsfrihet.
         </p>
       </header>
 
-      <main className="calculator-page__layout">
-        <aside className="calculator-page__sidebar">
+      <main className={styles.layout}>
+        <aside className={styles.sidebar}>
           <LoanForm
             principal={loanParameters.principal}
             annualInterestRatePercent={loanParameters.annualInterestRatePercent}
@@ -100,7 +100,7 @@ export function CalculatorPage() {
           />
         </aside>
 
-        <div className="calculator-page__content">
+        <div className={styles.content}>
           <KeyFigures
             headline={keyFigures.headline}
             figures={keyFigures.figures}
@@ -174,7 +174,7 @@ export function CalculatorPage() {
         </div>
       </main>
 
-      <footer className="calculator-page__footer">
+      <footer className={styles.footer}>
         <p>
           Annuitetslån med nominell rente og månedlige terminer. Gebyrer og
           renteendringer er ikke tatt med.

@@ -1,4 +1,4 @@
-import './KeyFigures.css'
+import styles from './key-figures.module.css'
 
 export type KeyFigureTone = 'neutral' | 'positive' | 'negative'
 
@@ -21,25 +21,25 @@ interface KeyFiguresProps {
 }
 
 const NOTE_CLASS_NAMES: Record<KeyFigureTone, string> = {
-  neutral: 'key-figures__note',
-  positive: 'key-figures__note key-figures__note--positive',
-  negative: 'key-figures__note key-figures__note--negative',
+  neutral: styles.note,
+  positive: `${styles.note} ${styles.notePositive}`,
+  negative: `${styles.note} ${styles.noteNegative}`,
 }
 
 export function KeyFigures({ headline, figures }: KeyFiguresProps) {
   return (
-    <div className="key-figures">
-      <section className="key-figures__headline">
-        <p className="key-figures__headline-label">{headline.label}</p>
-        <p className="key-figures__headline-value">{headline.value}</p>
-        <p className="key-figures__headline-note">{headline.note}</p>
+    <div className={styles.keyFigures}>
+      <section className={styles.headline}>
+        <p className={styles.headlineLabel}>{headline.label}</p>
+        <p className={styles.headlineValue}>{headline.value}</p>
+        <p className={styles.headlineNote}>{headline.note}</p>
       </section>
 
-      <div className="key-figures__grid">
+      <div className={styles.grid}>
         {figures.map((figure) => (
-          <article className="key-figures__figure" key={figure.label}>
-            <p className="key-figures__label">{figure.label}</p>
-            <p className="key-figures__value">{figure.value}</p>
+          <article className={styles.figure} key={figure.label}>
+            <p className={styles.label}>{figure.label}</p>
+            <p className={styles.value}>{figure.value}</p>
             {figure.note === undefined ? null : (
               <p className={NOTE_CLASS_NAMES[figure.noteTone ?? 'neutral']}>
                 {figure.note}

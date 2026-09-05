@@ -4,7 +4,7 @@ import { clampLoanParameters } from './constraints'
 import {
   buildSearchFromLoanParameters,
   readLoanParametersFromSearch,
-} from './loanParametersUrl'
+} from './loan-parameters-url'
 import type { LoanParameters, RepaymentPlanComparison } from './types'
 
 export const DEFAULT_LOAN_PARAMETERS: LoanParameters = {
@@ -60,7 +60,15 @@ export function useRepaymentPlan(): RepaymentPlanState {
       ),
     setAnnualInterestRatePercent: (annualInterestRatePercent) =>
       setLoanParameters((previous) =>
-        clampLoanParameters({ ...previous, annualInterestRatePercent }),
+        clampLoanParameters({
+          ...previous,
+          annualInterestRatePercent,
+          interestRateAfterInterestOnlyPeriodPercent:
+            previous.interestRateAfterInterestOnlyPeriodPercent ===
+            previous.annualInterestRatePercent
+              ? annualInterestRatePercent
+              : previous.interestRateAfterInterestOnlyPeriodPercent,
+        }),
       ),
     setInterestRateAfterInterestOnlyPeriodPercent: (
       interestRateAfterInterestOnlyPeriodPercent,

@@ -6,3 +6,6 @@ dist-ssr
 .DS_Store
 .vite
 node_modules/.tmp
+
+# genererte typer for CSS-moduler
+*.d.css.ts

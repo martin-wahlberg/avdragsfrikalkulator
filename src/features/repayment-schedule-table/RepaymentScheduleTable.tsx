@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import type { ReactNode } from 'react'
 import { Card } from '../ui/card/Card'
-import './RepaymentScheduleTable.css'
+import styles from './repayment-schedule-table.module.css'
 
 export interface ScheduleTableSubRow {
   label: string
@@ -39,8 +39,8 @@ export function RepaymentScheduleTable({
 }: RepaymentScheduleTableProps) {
   return (
     <Card title={title} description={description} action={controls}>
-      <div className="repayment-schedule-table__scroll">
-        <table className="repayment-schedule-table__table">
+      <div className={styles.scroll}>
+        <table className={styles.table}>
           <thead>
             <tr>
               {columnLabels.map((columnLabel) => (
@@ -52,14 +52,12 @@ export function RepaymentScheduleTable({
           </thead>
 
           {rows.map((row) => (
-            <tbody className="repayment-schedule-table__group" key={row.key}>
+            <tbody className={styles.group} key={row.key}>
               {row.subRows.map((subRow, subRowIndex) => (
                 <tr
                   key={subRow.label}
                   className={
-                    subRow.highlighted === true
-                      ? 'repayment-schedule-table__subrow repayment-schedule-table__subrow--highlighted'
-                      : 'repayment-schedule-table__subrow'
+                    subRow.highlighted === true ? styles.subrowHighlighted : undefined
                   }
                 >
                   {subRowIndex === 0 ? (
@@ -68,7 +66,7 @@ export function RepaymentScheduleTable({
                     </th>
                   ) : null}
 
-                  <td className="repayment-schedule-table__plan">
+                  <td className={styles.plan}>
                     {subRow.label}
                   </td>
 
@@ -91,7 +89,7 @@ export function RepaymentScheduleTable({
                   </th>
                 ) : null}
 
-                <td className="repayment-schedule-table__plan">
+                <td className={styles.plan}>
                   {subRow.label}
                 </td>
 

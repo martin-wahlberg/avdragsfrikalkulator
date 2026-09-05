@@ -1,4 +1,4 @@
-.number-field__label {
+.label {
   display: block;
   margin-bottom: 6px;
   font-size: 13px;
@@ -6,7 +6,7 @@
   color: var(--ink-secondary);
 }
 
-.number-field__control {
+.control {
   display: inline-flex;
   align-items: stretch;
   width: 100%;
@@ -18,16 +18,16 @@
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
-.number-field__control:hover {
+.control:hover {
   border-color: var(--field-border-strong);
 }
 
-.number-field__control:focus-within {
+.control:focus-within {
   border-color: var(--series-without-interest-only);
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
-.number-field__input {
+.input {
   flex: 1;
   min-width: 0;
   padding: 9px 12px;
@@ -40,11 +40,11 @@
   font-variant-numeric: tabular-nums;
 }
 
-.number-field__input:focus {
+.input:focus {
   outline: none;
 }
 
-.number-field__unit {
+.unit {
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -55,7 +55,7 @@
   white-space: nowrap;
 }
 
-.number-field__help-text {
+.helpText {
   margin: 6px 0 0;
   font-size: 12px;
   color: var(--ink-muted);

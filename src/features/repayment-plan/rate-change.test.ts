@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { calculateMonthlyInterestRate, calculatePayment } from './annuity'
 import { compareRepaymentPlans } from './calculations'
-import { findEqualPaymentInterestRatePercent } from './equalPaymentRate'
+import { findEqualPaymentInterestRatePercent } from './equal-payment-rate'
 import type { LoanParameters } from './types'
 
 const baseParameters: LoanParameters = {

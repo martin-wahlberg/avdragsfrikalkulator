@@ -1,7 +1,7 @@
 import { maximumInterestOnlyTermsFor } from '../repayment-plan/constraints'
 import { Card } from '../ui/card/Card'
 import { NumberField } from '../ui/number-field/NumberField'
-import './LoanForm.css'
+import styles from './loan-form.module.css'
 
 const MONTHS_PER_YEAR = 12
 
@@ -38,12 +38,12 @@ export function LoanForm({
     <Card
       title="Lånet ditt"
       action={
-        <button className="loan-form__reset" type="button" onClick={onReset}>
+        <button className={styles.reset} type="button" onClick={onReset}>
           Tilbakestill
         </button>
       }
     >
-      <div className="loan-form__fields">
+      <div className={styles.fields}>
         <NumberField
           label="Opprinnelig lånebeløp"
           value={principal}

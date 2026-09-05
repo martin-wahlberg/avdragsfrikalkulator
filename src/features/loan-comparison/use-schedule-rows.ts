@@ -3,15 +3,15 @@ import type {
   ScheduleTableRow,
   ScheduleTableSubRow,
   ScheduleTableTotalRow,
-} from '../../features/repayment-schedule-table/RepaymentScheduleTable'
+} from '../repayment-schedule-table/RepaymentScheduleTable'
 import type {
   RepaymentPlan,
   Term,
-} from '../../features/repayment-plan/types'
+} from '../repayment-plan/types'
 import {
   formatCurrencyWithDecimals,
   formatInteger,
-} from '../../lib/formatting'
+} from '../formatting/formatting'
 
 export const SCHEDULE_GROUPINGS = ['perMonth', 'perYear'] as const
 

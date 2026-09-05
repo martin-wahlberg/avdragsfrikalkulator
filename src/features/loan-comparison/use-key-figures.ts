@@ -2,16 +2,16 @@ import { useMemo } from 'react'
 import type {
   KeyFigure,
   KeyFigureHeadline,
-} from '../../features/key-figures/KeyFigures'
+} from '../key-figures/KeyFigures'
 import type {
   LoanParameters,
   RepaymentPlanComparison,
-} from '../../features/repayment-plan/types'
+} from '../repayment-plan/types'
 import {
   formatCurrency,
   formatPercent,
   formatTermsAsYearsAndMonths,
-} from '../../lib/formatting'
+} from '../formatting/formatting'
 
 export interface KeyFigureContent {
   headline: KeyFigureHeadline
