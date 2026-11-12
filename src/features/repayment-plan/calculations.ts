@@ -1,5 +1,6 @@
 import { calculateMonthlyInterestRate, calculatePayment } from './annuity'
 import { findEqualPaymentInterestRatePercent } from './equal-payment-rate'
+import { findEquivalentInterestRatePercent } from './equivalent-rate'
 import type {
   LoanParameters,
   RepaymentPlan,
@@ -197,6 +198,11 @@ export function compareRepaymentPlans(
     numberOfTermsWithRepayment,
     equalPaymentInterestRatePercent: findEqualPaymentInterestRatePercent(
       loanParameters,
+    ),
+    equivalentInterestRatePercent: findEquivalentInterestRatePercent(
+      principal,
+      numberOfTerms,
+      planWithInterestOnlyPeriod.totalInterestCost,
     ),
   }
 }

@@ -82,6 +82,14 @@ export function useKeyFigures(
             : 'Renta du må ned til for å få samme terminbeløp som opprinnelig. Men renta faller da også om man har betalt ned fra start.',
       },
       {
+        label: 'Tilsvarer en rente på',
+        value:
+          comparison.equivalentInterestRatePercent === null
+            ? 'Ikke regnbart'
+            : formatPercent(comparison.equivalentInterestRatePercent),
+        note: 'Renta et vanlig annuitetslån måtte hatt for å koste deg like mye i renter. Ikke det samme som effektiv rente, som er lik i begge planene.',
+      },
+      {
         label: 'Terminer med avdrag',
         value: `${comparison.numberOfTermsWithRepayment}`,
         note: `${formatTermsAsYearsAndMonths(comparison.numberOfTermsWithRepayment)} til å nedbetale hele lånet`,

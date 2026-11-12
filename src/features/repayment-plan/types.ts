@@ -33,6 +33,7 @@ export interface RepaymentPlanComparison {
   additionalCostOfInterestOnlyPeriod: number
   numberOfTermsWithRepayment: number
   equalPaymentInterestRatePercent: number | null
+  equivalentInterestRatePercent: number | null
 }
 
 export interface RepaymentPlanState {
