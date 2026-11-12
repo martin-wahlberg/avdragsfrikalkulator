@@ -76,12 +76,12 @@ describe('readLoanParametersFromSearch', () => {
     )
 
     expect(parameters.numberOfTerms).toBe(120)
-    expect(parameters.numberOfInterestOnlyTerms).toBe(108)
+    expect(parameters.numberOfInterestOnlyTerms).toBe(119)
   })
 
-  it('keeps the loan term at a minimum of twelve terms', () => {
-    expect(readLoanParametersFromSearch('terminer=0', fallback).numberOfTerms).toBe(
-      12,
-    )
+  it('keeps the loan term at a minimum of one term', () => {
+    expect(
+      readLoanParametersFromSearch('terminer=0', fallback).numberOfTerms,
+    ).toBe(1)
   })
 })

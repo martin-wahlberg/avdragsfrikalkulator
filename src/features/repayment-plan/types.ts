@@ -34,3 +34,16 @@ export interface RepaymentPlanComparison {
   numberOfTermsWithRepayment: number
   equalPaymentInterestRatePercent: number | null
 }
+
+export interface RepaymentPlanState {
+  loanParameters: LoanParameters
+  setPrincipal: (principal: number) => void
+  setAnnualInterestRatePercent: (annualInterestRatePercent: number) => void
+  setInterestRateAfterInterestOnlyPeriodPercent: (
+    interestRateAfterInterestOnlyPeriodPercent: number,
+  ) => void
+  setNumberOfTerms: (numberOfTerms: number) => void
+  setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms: number) => void
+  resetToDefaults: () => void
+  comparison: RepaymentPlanComparison
+}

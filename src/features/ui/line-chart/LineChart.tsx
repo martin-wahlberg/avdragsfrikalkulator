@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { PointerEvent } from 'react'
 import styles from './line-chart.module.css'
+import type { LineChartProps } from './types'
 
 const CHART_WIDTH = 860
 const CHART_HEIGHT = 380
@@ -11,24 +12,6 @@ const MARGIN_BOTTOM = 44
 const PLOT_WIDTH = CHART_WIDTH - MARGIN_LEFT - MARGIN_RIGHT
 const PLOT_HEIGHT = CHART_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM
 const NUMBER_OF_HORIZONTAL_GRIDLINES = 4
-
-export interface LineChartSeries {
-  name: string
-  values: number[]
-  colorVariableName: string
-}
-
-interface LineChartProps {
-  series: LineChartSeries[]
-  maximumValue: number
-  pointsBetweenTicks: number
-  shadedPointCount?: number
-  formatValue: (value: number) => string
-  formatAxisValue: (value: number) => string
-  formatTickLabel: (pointIndex: number) => string
-  formatPointLabel: (pointIndex: number) => string
-  ariaLabel: string
-}
 
 export function LineChart({
   series,

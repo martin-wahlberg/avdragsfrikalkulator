@@ -1,25 +1,16 @@
 import { useMemo } from 'react'
-import type { LineChartSeries } from '../ui/line-chart/LineChart'
 import type {
   LoanParameters,
   RepaymentPlanComparison,
   Term,
 } from '../repayment-plan/types'
+import type { LineChartSeries } from '../ui/line-chart/types'
+import type { ChartContent, CostChartView } from './types'
 
 const WITHOUT_INTEREST_ONLY_COLOR = '--series-without-interest-only'
 const WITH_INTEREST_ONLY_COLOR = '--series-with-interest-only'
 const WITHOUT_INTEREST_ONLY_NAME = 'Uten avdragsfrihet'
 const WITH_INTEREST_ONLY_NAME = 'Med avdragsfrihet'
-
-export const COST_CHART_VIEWS = ['accumulatedInterest', 'payment'] as const
-
-export type CostChartView = (typeof COST_CHART_VIEWS)[number]
-
-export interface ChartContent {
-  series: LineChartSeries[]
-  maximumValue: number
-  shadedPointCount: number
-}
 
 function roundUpToNiceStep(value: number): number {
   if (value <= 0) {

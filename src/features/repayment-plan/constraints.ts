@@ -1,6 +1,6 @@
 import type { LoanParameters } from './types'
 
-export const MINIMUM_TERMS_WITH_REPAYMENT = 12
+export const MINIMUM_TERMS_WITH_REPAYMENT = 1
 
 export function maximumInterestOnlyTermsFor(numberOfTerms: number): number {
   return Math.max(numberOfTerms - MINIMUM_TERMS_WITH_REPAYMENT, 0)

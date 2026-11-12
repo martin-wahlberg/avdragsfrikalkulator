@@ -11,11 +11,13 @@ import {
   formatCurrency,
   formatTermsAsYearsAndMonths,
 } from '../../features/formatting/formatting'
+import type {
+  CostChartView,
+  ScheduleGrouping,
+} from '../../features/loan-comparison/types'
 import { useCostChart, useRemainingDebtChart } from '../../features/loan-comparison/use-chart-series'
-import type { CostChartView } from '../../features/loan-comparison/use-chart-series'
 import { useKeyFigures } from '../../features/loan-comparison/use-key-figures'
 import { useScheduleRows } from '../../features/loan-comparison/use-schedule-rows'
-import type { ScheduleGrouping } from '../../features/loan-comparison/use-schedule-rows'
 import styles from './calculator-page.module.css'
 
 const MONTHS_PER_TICK = 60

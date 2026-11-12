@@ -1,27 +1,14 @@
 import { useMemo } from 'react'
-import type {
-  ScheduleTableRow,
-  ScheduleTableSubRow,
-  ScheduleTableTotalRow,
-} from '../repayment-schedule-table/RepaymentScheduleTable'
-import type {
-  RepaymentPlan,
-  Term,
-} from '../repayment-plan/types'
 import {
   formatCurrencyWithDecimals,
   formatInteger,
 } from '../formatting/formatting'
-
-export const SCHEDULE_GROUPINGS = ['perMonth', 'perYear'] as const
-
-export type ScheduleGrouping = (typeof SCHEDULE_GROUPINGS)[number]
-
-export interface ScheduleContent {
-  columnLabels: string[]
-  rows: ScheduleTableRow[]
-  totalRow: ScheduleTableTotalRow
-}
+import type { RepaymentPlan, Term } from '../repayment-plan/types'
+import type {
+  ScheduleTableRow,
+  ScheduleTableSubRow,
+} from '../repayment-schedule-table/types'
+import type { ScheduleContent, ScheduleGrouping } from './types'
 
 const FROM_START_LABEL = 'Nedbetaling fra start'
 const INTEREST_ONLY_LABEL = 'Avdragsfrihet'

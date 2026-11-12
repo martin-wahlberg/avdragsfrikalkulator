@@ -1,22 +1,15 @@
 import { useMemo } from 'react'
-import type {
-  KeyFigure,
-  KeyFigureHeadline,
-} from '../key-figures/KeyFigures'
-import type {
-  LoanParameters,
-  RepaymentPlanComparison,
-} from '../repayment-plan/types'
 import {
   formatCurrency,
   formatPercent,
   formatTermsAsYearsAndMonths,
 } from '../formatting/formatting'
-
-export interface KeyFigureContent {
-  headline: KeyFigureHeadline
-  figures: KeyFigure[]
-}
+import type { KeyFigure, KeyFigureHeadline } from '../key-figures/types'
+import type {
+  LoanParameters,
+  RepaymentPlanComparison,
+} from '../repayment-plan/types'
+import type { KeyFigureContent } from './types'
 
 export function useKeyFigures(
   loanParameters: LoanParameters,

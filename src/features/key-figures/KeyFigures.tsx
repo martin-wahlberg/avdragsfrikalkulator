@@ -1,24 +1,5 @@
 import styles from './key-figures.module.css'
-
-export type KeyFigureTone = 'neutral' | 'positive' | 'negative'
-
-export interface KeyFigure {
-  label: string
-  value: string
-  note?: string
-  noteTone?: KeyFigureTone
-}
-
-export interface KeyFigureHeadline {
-  label: string
-  value: string
-  note: string
-}
-
-interface KeyFiguresProps {
-  headline: KeyFigureHeadline
-  figures: KeyFigure[]
-}
+import type { KeyFiguresProps, KeyFigureTone } from './types'
 
 const NOTE_CLASS_NAMES: Record<KeyFigureTone, string> = {
   neutral: styles.note,

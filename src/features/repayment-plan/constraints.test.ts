@@ -19,26 +19,30 @@ describe('clampLoanParameters', () => {
     expect(clampLoanParameters(parameters)).toEqual(parameters)
   })
 
-  it('always leaves at least twelve terms with repayment', () => {
+  it('always leaves at least one term with repayment', () => {
     const clamped = clampLoanParameters({
       ...parameters,
       numberOfInterestOnlyTerms: 360,
     })
 
-    expect(clamped.numberOfInterestOnlyTerms).toBe(348)
-    expect(
-      clamped.numberOfTerms - clamped.numberOfInterestOnlyTerms,
-    ).toBe(12)
+    expect(clamped.numberOfInterestOnlyTerms).toBe(359)
+    expect(clamped.numberOfTerms - clamped.numberOfInterestOnlyTerms).toBe(1)
   })
 
-  it('refuses a loan term shorter than twelve months', () => {
-    expect(clampLoanParameters({ ...parameters, numberOfTerms: 3 }).numberOfTerms).toBe(
-      12,
-    )
+  it('allows a loan as short as a single term', () => {
+    expect(
+      clampLoanParameters({ ...parameters, numberOfTerms: 1 }).numberOfTerms,
+    ).toBe(1)
+  })
+
+  it('refuses a loan with no terms at all', () => {
+    expect(
+      clampLoanParameters({ ...parameters, numberOfTerms: 0 }).numberOfTerms,
+    ).toBe(1)
   })
 
   it('allows no interest only period on the shortest loan', () => {
-    expect(maximumInterestOnlyTermsFor(12)).toBe(0)
+    expect(maximumInterestOnlyTermsFor(1)).toBe(0)
   })
 
   it('rejects negative input', () => {

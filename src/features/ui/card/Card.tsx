@@ -1,12 +1,5 @@
-import type { ReactNode } from 'react'
 import styles from './card.module.css'
-
-interface CardProps {
-  title?: string
-  description?: string
-  action?: ReactNode
-  children: ReactNode
-}
+import type { CardProps } from './types'
 
 export function Card({ title, description, action, children }: CardProps) {
   const hasHeader = title !== undefined || action !== undefined

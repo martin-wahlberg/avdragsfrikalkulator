@@ -5,7 +5,7 @@ import {
   buildSearchFromLoanParameters,
   readLoanParametersFromSearch,
 } from './loan-parameters-url'
-import type { LoanParameters, RepaymentPlanComparison } from './types'
+import type { LoanParameters, RepaymentPlanState } from './types'
 
 export const DEFAULT_LOAN_PARAMETERS: LoanParameters = {
   principal: 3000000,
@@ -13,19 +13,6 @@ export const DEFAULT_LOAN_PARAMETERS: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
-}
-
-export interface RepaymentPlanState {
-  loanParameters: LoanParameters
-  setPrincipal: (principal: number) => void
-  setAnnualInterestRatePercent: (annualInterestRatePercent: number) => void
-  setInterestRateAfterInterestOnlyPeriodPercent: (
-    interestRateAfterInterestOnlyPeriodPercent: number,
-  ) => void
-  setNumberOfTerms: (numberOfTerms: number) => void
-  setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms: number) => void
-  resetToDefaults: () => void
-  comparison: RepaymentPlanComparison
 }
 
 export function useRepaymentPlan(): RepaymentPlanState {

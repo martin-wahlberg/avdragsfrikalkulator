@@ -2,24 +2,9 @@ import { maximumInterestOnlyTermsFor } from '../repayment-plan/constraints'
 import { Card } from '../ui/card/Card'
 import { NumberField } from '../ui/number-field/NumberField'
 import styles from './loan-form.module.css'
+import type { LoanFormProps } from './types'
 
 const MONTHS_PER_YEAR = 12
-
-interface LoanFormProps {
-  principal: number
-  annualInterestRatePercent: number
-  interestRateAfterInterestOnlyPeriodPercent: number
-  numberOfTerms: number
-  numberOfInterestOnlyTerms: number
-  onPrincipalChange: (principal: number) => void
-  onAnnualInterestRatePercentChange: (annualInterestRatePercent: number) => void
-  onInterestRateAfterInterestOnlyPeriodPercentChange: (
-    interestRateAfterInterestOnlyPeriodPercent: number,
-  ) => void
-  onNumberOfTermsChange: (numberOfTerms: number) => void
-  onNumberOfInterestOnlyTermsChange: (numberOfInterestOnlyTerms: number) => void
-  onReset: () => void
-}
 
 export function LoanForm({
   principal,
@@ -47,8 +32,7 @@ export function LoanForm({
         <NumberField
           label="Opprinnelig lånebeløp"
           value={principal}
-          minimum={100000}
-          maximum={15000000}
+          minimum={0}
           step={1000}
           unit="kroner"
           onChange={onPrincipalChange}
@@ -58,7 +42,6 @@ export function LoanForm({
           label="Nominell rente"
           value={annualInterestRatePercent}
           minimum={0}
-          maximum={15}
           step={0.1}
           unit="prosent"
           onChange={onAnnualInterestRatePercentChange}
@@ -68,7 +51,6 @@ export function LoanForm({
           label="Rente etter avdragsfri periode"
           value={interestRateAfterInterestOnlyPeriodPercent}
           minimum={0}
-          maximum={15}
           step={0.1}
           unit="prosent"
           helpText={
@@ -82,8 +64,7 @@ export function LoanForm({
         <NumberField
           label="Løpetid"
           value={numberOfTerms / MONTHS_PER_YEAR}
-          minimum={1}
-          maximum={40}
+          minimum={1 / MONTHS_PER_YEAR}
           step={1}
           unit="år"
           onChange={(years) => onNumberOfTermsChange(years * MONTHS_PER_YEAR)}

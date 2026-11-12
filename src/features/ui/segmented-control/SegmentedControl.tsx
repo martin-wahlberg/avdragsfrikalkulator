@@ -1,16 +1,5 @@
 import styles from './segmented-control.module.css'
-
-export interface SegmentedControlOption<Value extends string> {
-  value: Value
-  label: string
-}
-
-interface SegmentedControlProps<Value extends string> {
-  options: readonly SegmentedControlOption<Value>[]
-  selectedValue: Value
-  ariaLabel: string
-  onChange: (value: Value) => void
-}
+import type { SegmentedControlProps } from './types'
 
 export function SegmentedControl<Value extends string>({
   options,

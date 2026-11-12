@@ -1,16 +1,6 @@
 import { useId, useState } from 'react'
 import styles from './number-field.module.css'
-
-interface NumberFieldProps {
-  label: string
-  value: number
-  minimum: number
-  maximum: number
-  step: number
-  unit: string
-  helpText?: string
-  onChange: (value: number) => void
-}
+import type { NumberFieldProps } from './types'
 
 export function NumberField({
   label,
@@ -26,7 +16,12 @@ export function NumberField({
   const [draftValue, setDraftValue] = useState<string | null>(null)
 
   function clampToRange(candidate: number): number {
-    return Math.min(Math.max(candidate, minimum), maximum)
+    const atLeastMinimum =
+      minimum === undefined ? candidate : Math.max(candidate, minimum)
+
+    return maximum === undefined
+      ? atLeastMinimum
+      : Math.min(atLeastMinimum, maximum)
   }
 
   function handleChange(rawValue: string) {
