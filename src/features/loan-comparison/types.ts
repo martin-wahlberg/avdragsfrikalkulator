@@ -25,3 +25,16 @@ export interface ScheduleContent {
   rows: ScheduleTableRow[]
   totalRow: ScheduleTableTotalRow
 }
+
+export interface CalculationExplanations {
+  additionalCost: string
+  paymentWithoutInterestOnlyPeriod: string
+  paymentDuringInterestOnlyPeriod: string
+  paymentAfterInterestOnlyPeriod: string
+  paymentAfterRateChangeWithoutInterestOnlyPeriod: string | undefined
+  totalCostWithoutInterestOnlyPeriod: string
+  totalCostWithInterestOnlyPeriod: string
+  equalPaymentInterestRate: string | undefined
+  equivalentInterestRate: string | undefined
+  termsWithRepayment: string | undefined
+}

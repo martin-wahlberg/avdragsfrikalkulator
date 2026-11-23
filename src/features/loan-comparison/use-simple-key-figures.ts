@@ -8,6 +8,7 @@ import type {
   LoanParameters,
   RepaymentPlanComparison,
 } from '../repayment-plan/types'
+import { buildCalculationExplanations } from './calculation-explanations'
 import type { KeyFigureContent } from './types'
 
 export function useSimpleKeyFigures(
@@ -15,6 +16,10 @@ export function useSimpleKeyFigures(
   comparison: RepaymentPlanComparison,
 ): KeyFigureContent {
   return useMemo(() => {
+    const calculations = buildCalculationExplanations(
+      loanParameters,
+      comparison,
+    )
     const hasInterestOnlyPeriod = loanParameters.numberOfInterestOnlyTerms > 0
     const freePeriod = formatTermsAsYearsAndMonths(
       loanParameters.numberOfInterestOnlyTerms,
@@ -30,6 +35,7 @@ export function useSimpleKeyFigures(
       note: hasInterestOnlyPeriod
         ? headlineNote
         : 'Du har ikke lagt inn avdragsfrihet, så det koster deg ingenting.',
+      calculation: calculations.additionalCost,
     }
 
     const figures: KeyFigure[] = [
@@ -38,6 +44,7 @@ export function useSimpleKeyFigures(
         value: formatCurrency(comparison.paymentDuringInterestOnlyPeriod),
         note: `${formatCurrency(comparison.monthlySavingDuringInterestOnlyPeriod)} lavere i måneden`,
         noteTone: 'positive',
+        calculation: calculations.paymentDuringInterestOnlyPeriod,
       },
       {
         label: 'Terminbeløp etter avdragsfrihet',
@@ -48,11 +55,13 @@ export function useSimpleKeyFigures(
         noteTone: loanParameters.extendsTermByInterestOnlyPeriod
           ? 'neutral'
           : 'negative',
+        calculation: calculations.paymentAfterInterestOnlyPeriod,
       },
       {
         label: 'Total kostnad med avdragsfrihet',
         value: formatCurrency(comparison.planWithInterestOnlyPeriod.totalCost),
         note: `Herav ${formatCurrency(comparison.planWithInterestOnlyPeriod.totalInterestCost)} i renter`,
+        calculation: calculations.totalCostWithInterestOnlyPeriod,
       },
       {
         label: 'Total kostnad uten avdragsfrihet',
@@ -60,6 +69,7 @@ export function useSimpleKeyFigures(
           comparison.planWithoutInterestOnlyPeriod.totalCost,
         ),
         note: `Herav ${formatCurrency(comparison.planWithoutInterestOnlyPeriod.totalInterestCost)} i renter`,
+        calculation: calculations.totalCostWithoutInterestOnlyPeriod,
       },
     ]
 

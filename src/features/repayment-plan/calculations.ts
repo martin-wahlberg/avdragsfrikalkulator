@@ -224,6 +224,7 @@ export function compareRepaymentPlans(
     numberOfTermsWithRepayment,
     totalNumberOfTerms,
     effectiveInterestOnlyTerms: numberOfInterestOnlyTerms,
+    debtWhenInterestRateChanges: debtWhenRateChanges,
     equalPaymentInterestRatePercent:
       findEqualPaymentInterestRatePercent(loanParameters),
     equivalentInterestRatePercent: findEquivalentInterestRatePercent(

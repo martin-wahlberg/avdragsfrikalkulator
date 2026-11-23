@@ -41,6 +41,7 @@ export interface RepaymentPlanComparison {
   numberOfTermsWithRepayment: number
   totalNumberOfTerms: number
   effectiveInterestOnlyTerms: number
+  debtWhenInterestRateChanges: number
   equalPaymentInterestRatePercent: number | null
   equivalentInterestRatePercent: number | null
 }

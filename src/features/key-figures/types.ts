@@ -5,12 +5,14 @@ export interface KeyFigure {
   value: string
   note?: string
   noteTone?: KeyFigureTone
+  calculation?: string
 }
 
 export interface KeyFigureHeadline {
   label: string
   value: string
   note: string
+  calculation?: string
 }
 
 export interface KeyFiguresProps {
