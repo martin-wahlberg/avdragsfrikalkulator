@@ -4,14 +4,9 @@ import { LoanForm } from '../../features/loan-form/LoanForm'
 import { buildSearchFromLoanParameters } from '../../features/repayment-plan/loan-parameters-url'
 import { useRepaymentPlan } from '../../features/repayment-plan/use-repayment-plan'
 import { RepaymentScheduleTable } from '../../features/repayment-schedule-table/RepaymentScheduleTable'
-import { Card } from '../../features/ui/card/Card'
-import { LineChart } from '../../features/ui/line-chart/LineChart'
 import { SegmentedControl } from '../../features/ui/segmented-control/SegmentedControl'
-import {
-  formatCompactNumber,
-  formatCurrency,
-  formatTermsAsYearsAndMonths,
-} from '../../features/formatting/formatting'
+import { formatTermsAsYearsAndMonths } from '../../features/formatting/formatting'
+import { LoanChartCard } from '../../features/loan-chart-card/LoanChartCard'
 import type {
   CostChartView,
   ScheduleGrouping,
@@ -22,8 +17,6 @@ import { useKeyFigures } from '../../features/loan-comparison/use-key-figures'
 import { useScheduleRows } from '../../features/loan-comparison/use-schedule-rows'
 import styles from './advanced-calculator-page.module.css'
 
-const MONTHS_PER_TICK = 60
-
 const COST_VIEW_OPTIONS = [
   { value: 'accumulatedInterest', label: 'Akkumulerte renter' },
   { value: 'payment', label: 'Terminbeløp' },
@@ -33,14 +26,6 @@ const GROUPING_OPTIONS = [
   { value: 'perMonth', label: 'Per måned' },
   { value: 'perYear', label: 'Per år' },
 ] as const
-
-function formatYearTick(pointIndex: number): string {
-  return `${pointIndex / 12} år`
-}
-
-function formatTermLabel(pointIndex: number): string {
-  return `Etter termin ${pointIndex}`
-}
 
 export function AdvancedCalculatorPage() {
   const {
@@ -123,30 +108,30 @@ export function AdvancedCalculatorPage() {
             figures={keyFigures.figures}
           />
 
-          <Card
+          <LoanChartCard
             title="Restgjeld gjennom løpetiden"
             description={`Med avdragsfrihet står gjelden stille, og ${loanParameters.extendsTermByInterestOnlyPeriod ? 'nedbetalingen starter først etterpå' : 'må hentes inn igjen på færre terminer'}. ${interestOnlyDescription}`}
-          >
-            <LineChart
-              series={remainingDebtChart.series}
-              maximumValue={remainingDebtChart.maximumValue}
-              shadedPointCount={remainingDebtChart.shadedPointCount}
-              pointsBetweenTicks={MONTHS_PER_TICK}
-              formatValue={formatCurrency}
-              formatAxisValue={formatCompactNumber}
-              formatTickLabel={formatYearTick}
-              formatPointLabel={formatTermLabel}
-              ariaLabel="Linjediagram over restgjeld med og uten avdragsfrihet gjennom hele løpetiden"
-            />
-          </Card>
+            ariaLabel="Linjediagram over restgjeld med og uten avdragsfrihet gjennom hele løpetiden"
+            series={remainingDebtChart.series}
+            maximumValue={remainingDebtChart.maximumValue}
+            shadedPointCount={remainingDebtChart.shadedPointCount}
+          />
 
-          <Card
+          <LoanChartCard
             title="Kostnader gjennom løpetiden"
             description={
               costView === 'accumulatedInterest'
                 ? 'Summen av alt du har betalt i renter så langt. Avstanden mellom linjene på slutten er merkostnaden ved avdragsfrihet.'
                 : 'Hva du betaler hver måned. Med avdragsfrihet betaler du mindre i starten og mer resten av løpetiden.'
             }
+            ariaLabel={
+              costView === 'accumulatedInterest'
+                ? 'Linjediagram over akkumulerte renter med og uten avdragsfrihet'
+                : 'Linjediagram over terminbeløp med og uten avdragsfrihet'
+            }
+            series={costChart.series}
+            maximumValue={costChart.maximumValue}
+            shadedPointCount={costChart.shadedPointCount}
             action={
               <SegmentedControl
                 options={COST_VIEW_OPTIONS}
@@ -155,23 +140,7 @@ export function AdvancedCalculatorPage() {
                 onChange={setCostView}
               />
             }
-          >
-            <LineChart
-              series={costChart.series}
-              maximumValue={costChart.maximumValue}
-              shadedPointCount={costChart.shadedPointCount}
-              pointsBetweenTicks={MONTHS_PER_TICK}
-              formatValue={formatCurrency}
-              formatAxisValue={formatCompactNumber}
-              formatTickLabel={formatYearTick}
-              formatPointLabel={formatTermLabel}
-              ariaLabel={
-                costView === 'accumulatedInterest'
-                  ? 'Linjediagram over akkumulerte renter med og uten avdragsfrihet'
-                  : 'Linjediagram over terminbeløp med og uten avdragsfrihet'
-              }
-            />
-          </Card>
+          />
 
           <RepaymentScheduleTable
             title="Nedbetalingsplan"
