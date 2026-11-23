@@ -71,14 +71,14 @@ describe('readLoanParametersFromSearch', () => {
     )
   })
 
-  it('always leaves twelve terms with repayment, even from a shared link', () => {
+  it('leser en delt lenke rakt av, uten a overskrive noe', () => {
     const parameters = readLoanParametersFromSearch(
       'terminer=120&avdragsfrie=240',
       fallback,
     )
 
     expect(parameters.numberOfTerms).toBe(120)
-    expect(parameters.numberOfInterestOnlyTerms).toBe(119)
+    expect(parameters.numberOfInterestOnlyTerms).toBe(240)
   })
 
   it('keeps the loan term at a minimum of one term', () => {

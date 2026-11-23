@@ -1,3 +1,4 @@
+import { effectiveInterestOnlyTerms } from './constraints'
 import type { LoanParameters, TermCounts } from './types'
 
 /**
@@ -9,16 +10,16 @@ import type { LoanParameters, TermCounts } from './types'
  * Sammenligningsgrunnlaget er det samme i begge tilfeller: lanet slik du
  * skrev det inn, uten avdragsfrihet.
  */
-export function countTerms({
-  numberOfTerms,
-  numberOfInterestOnlyTerms,
-  extendsTermByInterestOnlyPeriod,
-}: LoanParameters): TermCounts {
+export function countTerms(loanParameters: LoanParameters): TermCounts {
+  const { numberOfTerms, extendsTermByInterestOnlyPeriod } = loanParameters
+  const numberOfInterestOnlyTerms =
+    effectiveInterestOnlyTerms(loanParameters)
   const numberOfTermsWithRepayment = extendsTermByInterestOnlyPeriod
     ? numberOfTerms
     : numberOfTerms - numberOfInterestOnlyTerms
 
   return {
+    numberOfInterestOnlyTerms,
     numberOfTermsWithRepayment,
     totalNumberOfTerms: numberOfInterestOnlyTerms + numberOfTermsWithRepayment,
   }

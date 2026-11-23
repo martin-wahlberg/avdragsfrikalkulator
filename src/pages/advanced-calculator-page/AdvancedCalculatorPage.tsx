@@ -85,6 +85,7 @@ export function AdvancedCalculatorPage() {
             numberOfInterestOnlyTerms={
               loanParameters.numberOfInterestOnlyTerms
             }
+            effectiveInterestOnlyTerms={comparison.effectiveInterestOnlyTerms}
             extendsTermByInterestOnlyPeriod={
               loanParameters.extendsTermByInterestOnlyPeriod
             }

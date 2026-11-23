@@ -1,4 +1,4 @@
-import { maximumInterestOnlyTermsFor } from '../repayment-plan/constraints'
+import { formatTermsAsYearsAndMonths } from '../formatting/formatting'
 import { Card } from '../ui/card/Card'
 import { Checkbox } from '../ui/checkbox/Checkbox'
 import { NumberField } from '../ui/number-field/NumberField'
@@ -13,6 +13,7 @@ export function LoanForm({
   interestRateAfterInterestOnlyPeriodPercent,
   numberOfTerms,
   numberOfInterestOnlyTerms,
+  effectiveInterestOnlyTerms,
   extendsTermByInterestOnlyPeriod,
   onPrincipalChange,
   onAnnualInterestRatePercentChange,
@@ -22,6 +23,14 @@ export function LoanForm({
   onExtendsTermByInterestOnlyPeriodChange,
   onReset,
 }: LoanFormProps) {
+  const isLimitedByLoanTerm =
+    effectiveInterestOnlyTerms < numberOfInterestOnlyTerms
+  const interestOnlyHelpText = isLimitedByLoanTerm
+    ? `Begrenset til ${formatTermsAsYearsAndMonths(effectiveInterestOnlyTerms)}, fordi minst én termin må betale avdrag.`
+    : numberOfInterestOnlyTerms === 0
+      ? 'Uten avdragsfrie terminer blir de to planene like.'
+      : undefined
+
   return (
     <Card
       title="Lånet ditt"
@@ -77,18 +86,9 @@ export function LoanForm({
           label="Avdragsfrihet"
           value={numberOfInterestOnlyTerms / MONTHS_PER_YEAR}
           minimum={0}
-          maximum={
-            extendsTermByInterestOnlyPeriod
-              ? undefined
-              : maximumInterestOnlyTermsFor(numberOfTerms) / MONTHS_PER_YEAR
-          }
           step={1}
           unit="år"
-          helpText={
-            numberOfInterestOnlyTerms === 0
-              ? 'Uten avdragsfrie terminer blir de to planene like.'
-              : undefined
-          }
+          helpText={interestOnlyHelpText}
           onChange={(years) =>
             onNumberOfInterestOnlyTermsChange(years * MONTHS_PER_YEAR)
           }

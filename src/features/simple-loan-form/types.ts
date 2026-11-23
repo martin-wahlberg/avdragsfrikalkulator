@@ -3,6 +3,7 @@ export interface SimpleLoanFormProps {
   annualInterestRatePercent: number
   numberOfTerms: number
   numberOfInterestOnlyTerms: number
+  effectiveInterestOnlyTerms: number
   extendsTermByInterestOnlyPeriod: boolean
   onPrincipalChange: (principal: number) => void
   onAnnualInterestRatePercentChange: (annualInterestRatePercent: number) => void

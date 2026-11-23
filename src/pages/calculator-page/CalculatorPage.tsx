@@ -63,6 +63,7 @@ export function CalculatorPage() {
           annualInterestRatePercent={loanParameters.annualInterestRatePercent}
           numberOfTerms={loanParameters.numberOfTerms}
           numberOfInterestOnlyTerms={loanParameters.numberOfInterestOnlyTerms}
+          effectiveInterestOnlyTerms={comparison.effectiveInterestOnlyTerms}
           extendsTermByInterestOnlyPeriod={
             loanParameters.extendsTermByInterestOnlyPeriod
           }

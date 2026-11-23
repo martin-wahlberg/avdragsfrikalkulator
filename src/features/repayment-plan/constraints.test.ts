@@ -20,15 +20,22 @@ describe('clampLoanParameters', () => {
     expect(clampLoanParameters(parameters)).toEqual(parameters)
   })
 
-  it('always leaves at least one term with repayment', () => {
+  it('lar avdragsfriheten sta urort selv om den overstiger lopetiden', () => {
     const clamped = clampLoanParameters({
       ...parameters,
       numberOfInterestOnlyTerms: 360,
       extendsTermByInterestOnlyPeriod: false,
     })
 
-    expect(clamped.numberOfInterestOnlyTerms).toBe(359)
-    expect(clamped.numberOfTerms - clamped.numberOfInterestOnlyTerms).toBe(1)
+    expect(clamped.numberOfInterestOnlyTerms).toBe(360)
+  })
+
+  it('endrer ikke avdragsfriheten nar lopetiden endres', () => {
+    const clamped = clampLoanParameters({ ...parameters, numberOfTerms: 24 })
+
+    expect(clamped.numberOfInterestOnlyTerms).toBe(
+      parameters.numberOfInterestOnlyTerms,
+    )
   })
 
   it('allows a loan as short as a single term', () => {
@@ -63,8 +70,8 @@ describe('clampLoanParameters', () => {
   })
 })
 
-describe('the degenerate case the clamp exists to prevent', () => {
-  it('keeps the extra cost positive once clamped', () => {
+describe('the degenerate case the limit exists to prevent', () => {
+  it('keeps the extra cost positive once limited', () => {
     const comparison = compareRepaymentPlans(
       clampLoanParameters({ ...parameters, numberOfInterestOnlyTerms: 360 }),
     )
@@ -72,7 +79,7 @@ describe('the degenerate case the clamp exists to prevent', () => {
     expect(comparison.additionalCostOfInterestOnlyPeriod).toBeGreaterThan(0)
   })
 
-  it('still repays the whole loan once clamped', () => {
+  it('still repays the whole loan once limited', () => {
     const comparison = compareRepaymentPlans(
       clampLoanParameters({ ...parameters, numberOfInterestOnlyTerms: 360 }),
     )

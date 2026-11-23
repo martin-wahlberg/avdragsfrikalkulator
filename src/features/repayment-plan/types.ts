@@ -8,6 +8,7 @@ export interface LoanParameters {
 }
 
 export interface TermCounts {
+  numberOfInterestOnlyTerms: number
   numberOfTermsWithRepayment: number
   totalNumberOfTerms: number
 }
@@ -39,6 +40,7 @@ export interface RepaymentPlanComparison {
   additionalCostOfInterestOnlyPeriod: number
   numberOfTermsWithRepayment: number
   totalNumberOfTerms: number
+  effectiveInterestOnlyTerms: number
   equalPaymentInterestRatePercent: number | null
   equivalentInterestRatePercent: number | null
 }

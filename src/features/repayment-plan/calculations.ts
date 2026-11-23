@@ -25,13 +25,16 @@ function summarizeTerms(terms: Term[]): RepaymentPlan {
  * Lanet slik det ser ut uten avdragsfrihet. Dette er sammenligningsgrunnlaget
  * i begge modusene, sa det bruker alltid lopetiden du skrev inn.
  */
-export function calculatePlanWithoutInterestOnlyPeriod({
-  principal,
-  annualInterestRatePercent,
-  interestRateAfterInterestOnlyPeriodPercent,
-  numberOfTerms,
-  numberOfInterestOnlyTerms,
-}: LoanParameters): RepaymentPlan {
+export function calculatePlanWithoutInterestOnlyPeriod(
+  loanParameters: LoanParameters,
+): RepaymentPlan {
+  const {
+    principal,
+    annualInterestRatePercent,
+    interestRateAfterInterestOnlyPeriodPercent,
+    numberOfTerms,
+  } = loanParameters
+  const { numberOfInterestOnlyTerms } = countTerms(loanParameters)
   const rateBeforeChange = calculateMonthlyInterestRate(
     annualInterestRatePercent,
   )
@@ -105,10 +108,12 @@ export function calculatePlanWithInterestOnlyPeriod(
     principal,
     annualInterestRatePercent,
     interestRateAfterInterestOnlyPeriodPercent,
-    numberOfInterestOnlyTerms,
   } = loanParameters
-  const { numberOfTermsWithRepayment, totalNumberOfTerms } =
-    countTerms(loanParameters)
+  const {
+    numberOfInterestOnlyTerms,
+    numberOfTermsWithRepayment,
+    totalNumberOfTerms,
+  } = countTerms(loanParameters)
 
   const rateBeforeChange = calculateMonthlyInterestRate(
     annualInterestRatePercent,
@@ -155,10 +160,12 @@ export function compareRepaymentPlans(
     annualInterestRatePercent,
     interestRateAfterInterestOnlyPeriodPercent,
     numberOfTerms,
-    numberOfInterestOnlyTerms,
   } = loanParameters
-  const { numberOfTermsWithRepayment, totalNumberOfTerms } =
-    countTerms(loanParameters)
+  const {
+    numberOfInterestOnlyTerms,
+    numberOfTermsWithRepayment,
+    totalNumberOfTerms,
+  } = countTerms(loanParameters)
 
   const rateBeforeChange = calculateMonthlyInterestRate(
     annualInterestRatePercent,
@@ -216,6 +223,7 @@ export function compareRepaymentPlans(
       planWithoutInterestOnlyPeriod.totalCost,
     numberOfTermsWithRepayment,
     totalNumberOfTerms,
+    effectiveInterestOnlyTerms: numberOfInterestOnlyTerms,
     equalPaymentInterestRatePercent:
       findEqualPaymentInterestRatePercent(loanParameters),
     equivalentInterestRatePercent: findEquivalentInterestRatePercent(

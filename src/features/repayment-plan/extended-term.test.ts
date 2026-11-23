@@ -18,11 +18,16 @@ describe('countTerms', () => {
   it('spiser av lopetiden nar avdragsfriheten ikke legges til', () => {
     expect(
       countTerms({ ...baseParameters, extendsTermByInterestOnlyPeriod: false }),
-    ).toEqual({ numberOfTermsWithRepayment: 300, totalNumberOfTerms: 360 })
+    ).toEqual({
+      numberOfInterestOnlyTerms: 60,
+      numberOfTermsWithRepayment: 300,
+      totalNumberOfTerms: 360,
+    })
   })
 
   it('legger avdragsfriheten til lopetiden', () => {
     expect(countTerms(baseParameters)).toEqual({
+      numberOfInterestOnlyTerms: 60,
       numberOfTermsWithRepayment: 360,
       totalNumberOfTerms: 420,
     })
@@ -105,14 +110,23 @@ describe('grenser i den nye modusen', () => {
     expect(countTerms(clamped).totalNumberOfTerms).toBe(960)
   })
 
-  it('klipper fortsatt avdragsfriheten nar den spiser av lopetiden', () => {
-    const clamped = clampLoanParameters({
+  it('begrenser avdragsfriheten i beregningen, ikke i tilstanden', () => {
+    const parameters = {
       ...baseParameters,
       numberOfInterestOnlyTerms: 600,
       extendsTermByInterestOnlyPeriod: false,
-    })
+    }
 
-    expect(clamped.numberOfInterestOnlyTerms).toBe(359)
+    expect(clampLoanParameters(parameters).numberOfInterestOnlyTerms).toBe(600)
+    expect(countTerms(parameters).numberOfInterestOnlyTerms).toBe(359)
+    expect(countTerms(parameters).numberOfTermsWithRepayment).toBe(1)
+  })
+
+  it('gir avdragsfriheten tilbake nar lopetiden okes igjen', () => {
+    const shortened = { ...baseParameters, numberOfTerms: 24 }
+    const restored = clampLoanParameters({ ...shortened, numberOfTerms: 360 })
+
+    expect(restored.numberOfInterestOnlyTerms).toBe(60)
   })
 
   it('gir like planer uten avdragsfrie terminer', () => {
