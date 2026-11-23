@@ -35,18 +35,18 @@ describe('buildRouteHref', () => {
     )
     expect(
       buildRouteHref('advancedCalculator', '/avdragsfrikalkulator/', ''),
-    ).toBe('/avdragsfrikalkulator/advanced')
+    ).toBe('/avdragsfrikalkulator/advanced/')
   })
 
   it('tar med spørringen så lånet følger med', () => {
     expect(
       buildRouteHref('advancedCalculator', '/avdragsfrikalkulator/', '?belop=2'),
-    ).toBe('/avdragsfrikalkulator/advanced?belop=2')
+    ).toBe('/avdragsfrikalkulator/advanced/?belop=2')
   })
 
   it('tåler base uten etterfølgende skråstrek', () => {
     expect(buildRouteHref('advancedCalculator', '/base', '')).toBe(
-      '/base/advanced',
+      '/base/advanced/',
     )
   })
 })

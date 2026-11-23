@@ -22,4 +22,12 @@ function serveAppOnUnknownPaths() {
 export default defineConfig({
   base: '/avdragsfrikalkulator/',
   plugins: [react(), serveAppOnUnknownPaths()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve('index.html'),
+        advanced: resolve('advanced/index.html'),
+      },
+    },
+  },
 })

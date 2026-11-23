@@ -22,7 +22,7 @@ export function buildRouteHref(
     : `${basePath}/`
   const path =
     route === 'advancedCalculator'
-      ? `${pathWithTrailingSlash}${ADVANCED_SEGMENT}`
+      ? `${pathWithTrailingSlash}${ADVANCED_SEGMENT}/`
       : pathWithTrailingSlash
 
   return `${path}${search}`
