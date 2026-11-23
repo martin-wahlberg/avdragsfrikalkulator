@@ -9,6 +9,7 @@ const baseParameters: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
+  extendsTermByInterestOnlyPeriod: false,
 }
 
 function equivalentRateFor(overrides: Partial<LoanParameters>): number | null {
@@ -55,6 +56,7 @@ describe('findEquivalentInterestRatePercent', () => {
       annualInterestRatePercent: rate ?? 0,
       interestRateAfterInterestOnlyPeriodPercent: rate ?? 0,
       numberOfInterestOnlyTerms: 0,
+      extendsTermByInterestOnlyPeriod: false,
     })
 
     expect(

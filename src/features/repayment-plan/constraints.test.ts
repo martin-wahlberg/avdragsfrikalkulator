@@ -12,6 +12,7 @@ const parameters: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
+  extendsTermByInterestOnlyPeriod: false,
 }
 
 describe('clampLoanParameters', () => {
@@ -23,6 +24,7 @@ describe('clampLoanParameters', () => {
     const clamped = clampLoanParameters({
       ...parameters,
       numberOfInterestOnlyTerms: 360,
+      extendsTermByInterestOnlyPeriod: false,
     })
 
     expect(clamped.numberOfInterestOnlyTerms).toBe(359)
@@ -52,6 +54,7 @@ describe('clampLoanParameters', () => {
       interestRateAfterInterestOnlyPeriodPercent: -5,
       numberOfTerms: 360,
       numberOfInterestOnlyTerms: -12,
+      extendsTermByInterestOnlyPeriod: false,
     })
 
     expect(clamped.principal).toBe(0)

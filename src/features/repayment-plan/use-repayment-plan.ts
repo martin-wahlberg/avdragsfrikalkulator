@@ -13,6 +13,7 @@ export const DEFAULT_LOAN_PARAMETERS: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5.1,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
+  extendsTermByInterestOnlyPeriod: false,
 }
 
 export function useRepaymentPlan(): RepaymentPlanState {
@@ -81,6 +82,10 @@ export function useRepaymentPlan(): RepaymentPlanState {
     setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms) =>
       setLoanParameters((previous) =>
         clampLoanParameters({ ...previous, numberOfInterestOnlyTerms }),
+      ),
+    setExtendsTermByInterestOnlyPeriod: (extendsTermByInterestOnlyPeriod) =>
+      setLoanParameters((previous) =>
+        clampLoanParameters({ ...previous, extendsTermByInterestOnlyPeriod }),
       ),
     resetToDefaults: () => setLoanParameters(DEFAULT_LOAN_PARAMETERS),
   }

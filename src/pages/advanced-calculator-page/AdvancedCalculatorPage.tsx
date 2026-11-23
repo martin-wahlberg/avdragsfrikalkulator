@@ -51,6 +51,7 @@ export function AdvancedCalculatorPage() {
     setInterestRateAfterInterestOnlyPeriodPercent,
     setNumberOfTerms,
     setNumberOfInterestOnlyTerms,
+    setExtendsTermByInterestOnlyPeriod,
     resetToDefaults,
   } = useRepaymentPlan()
 
@@ -99,6 +100,9 @@ export function AdvancedCalculatorPage() {
             numberOfInterestOnlyTerms={
               loanParameters.numberOfInterestOnlyTerms
             }
+            extendsTermByInterestOnlyPeriod={
+              loanParameters.extendsTermByInterestOnlyPeriod
+            }
             onPrincipalChange={setPrincipal}
             onAnnualInterestRatePercentChange={setAnnualInterestRatePercent}
             onInterestRateAfterInterestOnlyPeriodPercentChange={
@@ -106,6 +110,9 @@ export function AdvancedCalculatorPage() {
             }
             onNumberOfTermsChange={setNumberOfTerms}
             onNumberOfInterestOnlyTermsChange={setNumberOfInterestOnlyTerms}
+            onExtendsTermByInterestOnlyPeriodChange={
+              setExtendsTermByInterestOnlyPeriod
+            }
             onReset={resetToDefaults}
           />
         </aside>
@@ -118,7 +125,7 @@ export function AdvancedCalculatorPage() {
 
           <Card
             title="Restgjeld gjennom løpetiden"
-            description={`Med avdragsfrihet står gjelden stille, og må hentes inn igjen på færre terminer. ${interestOnlyDescription}`}
+            description={`Med avdragsfrihet står gjelden stille, og ${loanParameters.extendsTermByInterestOnlyPeriod ? 'nedbetalingen starter først etterpå' : 'må hentes inn igjen på færre terminer'}. ${interestOnlyDescription}`}
           >
             <LineChart
               series={remainingDebtChart.series}

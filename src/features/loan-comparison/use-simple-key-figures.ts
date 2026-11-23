@@ -16,12 +16,19 @@ export function useSimpleKeyFigures(
 ): KeyFigureContent {
   return useMemo(() => {
     const hasInterestOnlyPeriod = loanParameters.numberOfInterestOnlyTerms > 0
+    const freePeriod = formatTermsAsYearsAndMonths(
+      loanParameters.numberOfInterestOnlyTerms,
+    )
+
+    const headlineNote = loanParameters.extendsTermByInterestOnlyPeriod
+      ? `ekstra i renter. Du betaler bare renter i ${freePeriod}, og lånet løper ${formatTermsAsYearsAndMonths(comparison.totalNumberOfTerms)} i stedet for ${formatTermsAsYearsAndMonths(loanParameters.numberOfTerms)}.`
+      : `ekstra i renter. Du betaler mindre i ${freePeriod}, og må nedbetale hele lånet på ${formatTermsAsYearsAndMonths(comparison.numberOfTermsWithRepayment)} i stedet for ${formatTermsAsYearsAndMonths(loanParameters.numberOfTerms)}.`
 
     const headline: KeyFigureHeadline = {
       label: 'Avdragsfriheten koster deg',
       value: formatCurrency(comparison.additionalCostOfInterestOnlyPeriod),
       note: hasInterestOnlyPeriod
-        ? `ekstra i renter. Du betaler mindre i ${formatTermsAsYearsAndMonths(loanParameters.numberOfInterestOnlyTerms)}, og må nedbetale hele lånet på ${formatTermsAsYearsAndMonths(comparison.numberOfTermsWithRepayment)} i stedet for ${formatTermsAsYearsAndMonths(loanParameters.numberOfTerms)}.`
+        ? headlineNote
         : 'Du har ikke lagt inn avdragsfrihet, så det koster deg ingenting.',
     }
 
@@ -35,8 +42,12 @@ export function useSimpleKeyFigures(
       {
         label: 'Terminbeløp etter avdragsfrihet',
         value: formatCurrency(comparison.paymentAfterInterestOnlyPeriod),
-        note: `${formatCurrency(comparison.monthlyIncreaseAfterInterestOnlyPeriod)} høyere i måneden`,
-        noteTone: 'negative',
+        note: loanParameters.extendsTermByInterestOnlyPeriod
+          ? 'Uendret, men du betaler det i flere år'
+          : `${formatCurrency(comparison.monthlyIncreaseAfterInterestOnlyPeriod)} høyere i måneden`,
+        noteTone: loanParameters.extendsTermByInterestOnlyPeriod
+          ? 'neutral'
+          : 'negative',
       },
       {
         label: 'Total kostnad med avdragsfrihet',

@@ -28,7 +28,7 @@ export function useKeyFigures(
       label: 'Avdragsfriheten koster deg',
       value: formatCurrency(comparison.additionalCostOfInterestOnlyPeriod),
       note: hasInterestOnlyPeriod
-        ? `ekstra over hele løpetiden. Gjelden står stille i ${formatTermsAsYearsAndMonths(loanParameters.numberOfInterestOnlyTerms)} og må nedbetales på ${formatTermsAsYearsAndMonths(comparison.numberOfTermsWithRepayment)} i stedet for ${formatTermsAsYearsAndMonths(loanParameters.numberOfTerms)}. Begge scenarioene bytter rente${rateChangeSuffix} fra termin ${loanParameters.numberOfInterestOnlyTerms + 1}.`
+        ? `ekstra over hele løpetiden. Gjelden står stille i ${formatTermsAsYearsAndMonths(loanParameters.numberOfInterestOnlyTerms)}, og ${loanParameters.extendsTermByInterestOnlyPeriod ? `lånet løper ${formatTermsAsYearsAndMonths(comparison.totalNumberOfTerms)} i stedet for ${formatTermsAsYearsAndMonths(loanParameters.numberOfTerms)}` : `må nedbetales på ${formatTermsAsYearsAndMonths(comparison.numberOfTermsWithRepayment)} i stedet for ${formatTermsAsYearsAndMonths(loanParameters.numberOfTerms)}`}. Begge scenarioene bytter rente${rateChangeSuffix} fra termin ${loanParameters.numberOfInterestOnlyTerms + 1}.`
         : 'Du har ikke lagt inn noen avdragsfrie terminer, så de to planene er identiske.',
     }
 

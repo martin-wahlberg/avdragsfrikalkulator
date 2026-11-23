@@ -6,6 +6,7 @@ const INTEREST_RATE_KEY = 'rente'
 const INTEREST_RATE_AFTER_KEY = 'nyrente'
 const TERMS_KEY = 'terminer'
 const INTEREST_ONLY_TERMS_KEY = 'avdragsfrie'
+const EXTENDS_TERM_KEY = 'forleng'
 
 function readNumber(
   searchParameters: URLSearchParams,
@@ -25,6 +26,20 @@ function readNumber(
   }
 
   return parsedValue
+}
+
+function readFlag(
+  searchParameters: URLSearchParams,
+  key: string,
+  fallback: boolean,
+): boolean {
+  const rawValue = searchParameters.get(key)
+
+  if (rawValue === null) {
+    return fallback
+  }
+
+  return rawValue === '1' || rawValue === 'true'
 }
 
 export function readLoanParametersFromSearch(
@@ -56,6 +71,11 @@ export function readLoanParametersFromSearch(
       INTEREST_ONLY_TERMS_KEY,
       fallback.numberOfInterestOnlyTerms,
     ),
+    extendsTermByInterestOnlyPeriod: readFlag(
+      searchParameters,
+      EXTENDS_TERM_KEY,
+      fallback.extendsTermByInterestOnlyPeriod,
+    ),
   })
 }
 
@@ -77,6 +97,10 @@ export function buildSearchFromLoanParameters(
   searchParameters.set(
     INTEREST_ONLY_TERMS_KEY,
     String(loanParameters.numberOfInterestOnlyTerms),
+  )
+  searchParameters.set(
+    EXTENDS_TERM_KEY,
+    loanParameters.extendsTermByInterestOnlyPeriod ? '1' : '0',
   )
 
   return searchParameters.toString()

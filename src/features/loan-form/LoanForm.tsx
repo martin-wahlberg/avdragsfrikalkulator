@@ -1,5 +1,6 @@
 import { maximumInterestOnlyTermsFor } from '../repayment-plan/constraints'
 import { Card } from '../ui/card/Card'
+import { Checkbox } from '../ui/checkbox/Checkbox'
 import { NumberField } from '../ui/number-field/NumberField'
 import styles from './loan-form.module.css'
 import type { LoanFormProps } from './types'
@@ -12,11 +13,13 @@ export function LoanForm({
   interestRateAfterInterestOnlyPeriodPercent,
   numberOfTerms,
   numberOfInterestOnlyTerms,
+  extendsTermByInterestOnlyPeriod,
   onPrincipalChange,
   onAnnualInterestRatePercentChange,
   onInterestRateAfterInterestOnlyPeriodPercentChange,
   onNumberOfTermsChange,
   onNumberOfInterestOnlyTermsChange,
+  onExtendsTermByInterestOnlyPeriodChange,
   onReset,
 }: LoanFormProps) {
   return (
@@ -74,7 +77,11 @@ export function LoanForm({
           label="Avdragsfrihet"
           value={numberOfInterestOnlyTerms / MONTHS_PER_YEAR}
           minimum={0}
-          maximum={maximumInterestOnlyTermsFor(numberOfTerms) / MONTHS_PER_YEAR}
+          maximum={
+            extendsTermByInterestOnlyPeriod
+              ? undefined
+              : maximumInterestOnlyTermsFor(numberOfTerms) / MONTHS_PER_YEAR
+          }
           step={1}
           unit="år"
           helpText={
@@ -85,6 +92,17 @@ export function LoanForm({
           onChange={(years) =>
             onNumberOfInterestOnlyTermsChange(years * MONTHS_PER_YEAR)
           }
+        />
+
+        <Checkbox
+          label="Legg avdragsfriheten til løpetiden"
+          checked={extendsTermByInterestOnlyPeriod}
+          helpText={
+            extendsTermByInterestOnlyPeriod
+              ? `Lånet nedbetales fortsatt over ${numberOfTerms / MONTHS_PER_YEAR} år, men starter først etter den avdragsfrie perioden.`
+              : 'Avdragsfriheten spiser av løpetiden, så lånet må nedbetales på færre terminer.'
+          }
+          onChange={onExtendsTermByInterestOnlyPeriodChange}
         />
       </div>
     </Card>

@@ -14,10 +14,17 @@ export function clampLoanParameters(
     MINIMUM_TERMS_WITH_REPAYMENT,
   )
 
-  const numberOfInterestOnlyTerms = Math.min(
-    Math.max(Math.round(loanParameters.numberOfInterestOnlyTerms), 0),
-    maximumInterestOnlyTermsFor(numberOfTerms),
+  const requestedInterestOnlyTerms = Math.max(
+    Math.round(loanParameters.numberOfInterestOnlyTerms),
+    0,
   )
+  const numberOfInterestOnlyTerms =
+    loanParameters.extendsTermByInterestOnlyPeriod
+      ? requestedInterestOnlyTerms
+      : Math.min(
+          requestedInterestOnlyTerms,
+          maximumInterestOnlyTermsFor(numberOfTerms),
+        )
 
   return {
     ...loanParameters,

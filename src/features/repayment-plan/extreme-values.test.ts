@@ -11,6 +11,7 @@ function planFor(overrides: Partial<LoanParameters>) {
       interestRateAfterInterestOnlyPeriodPercent: 5,
       numberOfTerms: 360,
       numberOfInterestOnlyTerms: 60,
+      extendsTermByInterestOnlyPeriod: false,
       ...overrides,
     }),
   )

@@ -11,12 +11,13 @@ const fallback: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5.2,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
+  extendsTermByInterestOnlyPeriod: false,
 }
 
 describe('buildSearchFromLoanParameters', () => {
   it('writes every parameter to the query string', () => {
     expect(buildSearchFromLoanParameters(fallback)).toBe(
-      'belop=676721&rente=5.2&nyrente=5.2&terminer=360&avdragsfrie=60',
+      'belop=676721&rente=5.2&nyrente=5.2&terminer=360&avdragsfrie=60&forleng=0',
     )
   })
 })
@@ -29,6 +30,7 @@ describe('readLoanParametersFromSearch', () => {
       interestRateAfterInterestOnlyPeriodPercent: 3.9,
       numberOfTerms: 300,
       numberOfInterestOnlyTerms: 24,
+      extendsTermByInterestOnlyPeriod: false,
     }
 
     expect(

@@ -14,6 +14,7 @@ export function CalculatorPage() {
     setInterestRateForBothPeriods,
     setNumberOfTerms,
     setNumberOfInterestOnlyTerms,
+    setExtendsTermByInterestOnlyPeriod,
     resetToDefaults,
   } = useRepaymentPlan()
 
@@ -39,10 +40,16 @@ export function CalculatorPage() {
           annualInterestRatePercent={loanParameters.annualInterestRatePercent}
           numberOfTerms={loanParameters.numberOfTerms}
           numberOfInterestOnlyTerms={loanParameters.numberOfInterestOnlyTerms}
+          extendsTermByInterestOnlyPeriod={
+            loanParameters.extendsTermByInterestOnlyPeriod
+          }
           onPrincipalChange={setPrincipal}
           onAnnualInterestRatePercentChange={setInterestRateForBothPeriods}
           onNumberOfTermsChange={setNumberOfTerms}
           onNumberOfInterestOnlyTermsChange={setNumberOfInterestOnlyTerms}
+          onExtendsTermByInterestOnlyPeriodChange={
+            setExtendsTermByInterestOnlyPeriod
+          }
           onReset={resetToDefaults}
         />
 

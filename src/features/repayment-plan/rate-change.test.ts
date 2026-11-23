@@ -10,6 +10,7 @@ const baseParameters: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
+  extendsTermByInterestOnlyPeriod: false,
 }
 
 function withRateAfter(rateAfter: number): LoanParameters {
@@ -125,6 +126,7 @@ describe('findEqualPaymentInterestRatePercent', () => {
       findEqualPaymentInterestRatePercent({
         ...baseParameters,
         numberOfInterestOnlyTerms: 0,
+        extendsTermByInterestOnlyPeriod: false,
       }),
     ).toBeCloseTo(5, 4)
   })
@@ -134,6 +136,7 @@ describe('findEqualPaymentInterestRatePercent', () => {
       findEqualPaymentInterestRatePercent({
         ...baseParameters,
         numberOfInterestOnlyTerms: 300,
+        extendsTermByInterestOnlyPeriod: false,
       }),
     ).toBeNull()
   })

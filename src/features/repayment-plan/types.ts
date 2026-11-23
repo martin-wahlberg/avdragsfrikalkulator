@@ -4,6 +4,12 @@ export interface LoanParameters {
   interestRateAfterInterestOnlyPeriodPercent: number
   numberOfTerms: number
   numberOfInterestOnlyTerms: number
+  extendsTermByInterestOnlyPeriod: boolean
+}
+
+export interface TermCounts {
+  numberOfTermsWithRepayment: number
+  totalNumberOfTerms: number
 }
 
 export interface Term {
@@ -32,6 +38,7 @@ export interface RepaymentPlanComparison {
   monthlyIncreaseAfterInterestOnlyPeriod: number
   additionalCostOfInterestOnlyPeriod: number
   numberOfTermsWithRepayment: number
+  totalNumberOfTerms: number
   equalPaymentInterestRatePercent: number | null
   equivalentInterestRatePercent: number | null
 }
@@ -46,6 +53,9 @@ export interface RepaymentPlanState {
   setInterestRateForBothPeriods: (annualInterestRatePercent: number) => void
   setNumberOfTerms: (numberOfTerms: number) => void
   setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms: number) => void
+  setExtendsTermByInterestOnlyPeriod: (
+    extendsTermByInterestOnlyPeriod: boolean,
+  ) => void
   resetToDefaults: () => void
   comparison: RepaymentPlanComparison
 }

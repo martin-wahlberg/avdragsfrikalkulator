@@ -8,6 +8,7 @@ const parametersFromSourceSpreadsheet: LoanParameters = {
   interestRateAfterInterestOnlyPeriodPercent: 5.2,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
+  extendsTermByInterestOnlyPeriod: false,
 }
 
 function lastTerm(terms: Term[]): Term {
@@ -85,6 +86,7 @@ describe('compareRepaymentPlans at the boundaries', () => {
     const comparison = compareRepaymentPlans({
       ...parametersFromSourceSpreadsheet,
       numberOfInterestOnlyTerms: 0,
+      extendsTermByInterestOnlyPeriod: false,
     })
 
     expect(comparison.additionalCostOfInterestOnlyPeriod).toBeCloseTo(0, 6)
@@ -101,6 +103,7 @@ describe('compareRepaymentPlans at the boundaries', () => {
       interestRateAfterInterestOnlyPeriodPercent: 0,
       numberOfTerms: 12,
       numberOfInterestOnlyTerms: 0,
+      extendsTermByInterestOnlyPeriod: false,
     })
 
     expect(

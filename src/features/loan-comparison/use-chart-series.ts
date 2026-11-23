@@ -23,6 +23,29 @@ function roundUpToNiceStep(value: number): number {
   return Math.ceil(value / step) * step
 }
 
+/**
+ * Planene kan ha ulik lengde nar avdragsfriheten legges til lopetiden. Den
+ * korteste fylles ut sa begge dekker hele tidsaksen: gjeld og terminbelop med
+ * null, akkumulerte renter med sluttverdien siden det ikke paloper mer.
+ */
+function padToLength(
+  values: number[],
+  length: number,
+  filler: 'zero' | 'lastValue',
+): number[] {
+  if (values.length >= length) {
+    return values
+  }
+
+  const lastValue = values[values.length - 1] ?? 0
+  const fillerValue = filler === 'zero' ? 0 : lastValue
+
+  return [
+    ...values,
+    ...Array.from({ length: length - values.length }, () => fillerValue),
+  ]
+}
+
 function highestValue(series: LineChartSeries[]): number {
   return series.reduce(
     (highest, oneSeries) => Math.max(highest, ...oneSeries.values),
@@ -56,31 +79,40 @@ export function useRemainingDebtChart(
   loanParameters: LoanParameters,
   comparison: RepaymentPlanComparison,
 ): ChartContent {
-  return useMemo(
-    () => ({
+  return useMemo(() => {
+    const pointCount = comparison.totalNumberOfTerms + 1
+
+    return {
       series: [
         {
           name: WITHOUT_INTEREST_ONLY_NAME,
           colorVariableName: WITHOUT_INTEREST_ONLY_COLOR,
-          values: remainingDebtOverTime(
-            loanParameters.principal,
-            comparison.planWithoutInterestOnlyPeriod.terms,
+          values: padToLength(
+            remainingDebtOverTime(
+              loanParameters.principal,
+              comparison.planWithoutInterestOnlyPeriod.terms,
+            ),
+            pointCount,
+            'zero',
           ),
         },
         {
           name: WITH_INTEREST_ONLY_NAME,
           colorVariableName: WITH_INTEREST_ONLY_COLOR,
-          values: remainingDebtOverTime(
-            loanParameters.principal,
-            comparison.planWithInterestOnlyPeriod.terms,
+          values: padToLength(
+            remainingDebtOverTime(
+              loanParameters.principal,
+              comparison.planWithInterestOnlyPeriod.terms,
+            ),
+            pointCount,
+            'zero',
           ),
         },
       ],
       maximumValue: loanParameters.principal,
       shadedPointCount: loanParameters.numberOfInterestOnlyTerms,
-    }),
-    [loanParameters, comparison],
-  )
+    }
+  }, [loanParameters, comparison])
 }
 
 export function useCostChart(
@@ -94,16 +126,27 @@ export function useCostChart(
         ? accumulatedInterestOverTime
         : paymentOverTime
 
+    const pointCount = comparison.totalNumberOfTerms + 1
+    const filler = view === 'accumulatedInterest' ? 'lastValue' : 'zero'
+
     const series: LineChartSeries[] = [
       {
         name: WITHOUT_INTEREST_ONLY_NAME,
         colorVariableName: WITHOUT_INTEREST_ONLY_COLOR,
-        values: buildValues(comparison.planWithoutInterestOnlyPeriod.terms),
+        values: padToLength(
+          buildValues(comparison.planWithoutInterestOnlyPeriod.terms),
+          pointCount,
+          filler,
+        ),
       },
       {
         name: WITH_INTEREST_ONLY_NAME,
         colorVariableName: WITH_INTEREST_ONLY_COLOR,
-        values: buildValues(comparison.planWithInterestOnlyPeriod.terms),
+        values: padToLength(
+          buildValues(comparison.planWithInterestOnlyPeriod.terms),
+          pointCount,
+          filler,
+        ),
       },
     ]
 

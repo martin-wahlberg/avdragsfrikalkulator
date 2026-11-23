@@ -1,4 +1,5 @@
 import { calculateMonthlyInterestRate, calculatePayment } from './annuity'
+import { countTerms } from './term-counts'
 import type { LoanParameters } from './types'
 
 const MAXIMUM_ITERATIONS = 200
@@ -9,13 +10,11 @@ const RATE_TOLERANCE_PERCENT = 0.0000000001
  * lånet uten avdragsfrihet ville hatt til opprinnelig rente? Terminbeløpet
  * vokser monotont med renten, så binærsøk finner svaret.
  */
-export function findEqualPaymentInterestRatePercent({
-  principal,
-  annualInterestRatePercent,
-  numberOfTerms,
-  numberOfInterestOnlyTerms,
-}: LoanParameters): number | null {
-  const numberOfTermsWithRepayment = numberOfTerms - numberOfInterestOnlyTerms
+export function findEqualPaymentInterestRatePercent(
+  loanParameters: LoanParameters,
+): number | null {
+  const { principal, annualInterestRatePercent, numberOfTerms } = loanParameters
+  const { numberOfTermsWithRepayment } = countTerms(loanParameters)
 
   if (numberOfTermsWithRepayment <= 0 || principal <= 0) {
     return null

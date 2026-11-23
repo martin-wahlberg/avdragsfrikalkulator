@@ -23,18 +23,36 @@ function termToCells(term: Term): string[] {
   ]
 }
 
+const NOT_APPLICABLE_CELLS = ['', '', '', '']
+
+/**
+ * Nar avdragsfriheten legges til lopetiden er planene ulikt lange, sa den som
+ * allerede er nedbetalt har ingen rad igjen a vise.
+ */
 function comparedSubRows(
-  termFromStart: Term,
-  termWithInterestOnly: Term,
+  termFromStart: Term | undefined,
+  termWithInterestOnly: Term | undefined,
 ): ScheduleTableSubRow[] {
   return [
-    { label: FROM_START_LABEL, cells: termToCells(termFromStart) },
     {
-      label: termWithInterestOnly.isInterestOnly
-        ? INTEREST_ONLY_LABEL
-        : AFTER_INTEREST_ONLY_LABEL,
-      cells: termToCells(termWithInterestOnly),
-      highlighted: termWithInterestOnly.isInterestOnly,
+      label: FROM_START_LABEL,
+      cells:
+        termFromStart === undefined
+          ? NOT_APPLICABLE_CELLS
+          : termToCells(termFromStart),
+    },
+    {
+      label:
+        termWithInterestOnly === undefined
+          ? AFTER_INTEREST_ONLY_LABEL
+          : termWithInterestOnly.isInterestOnly
+            ? INTEREST_ONLY_LABEL
+            : AFTER_INTEREST_ONLY_LABEL,
+      cells:
+        termWithInterestOnly === undefined
+          ? NOT_APPLICABLE_CELLS
+          : termToCells(termWithInterestOnly),
+      highlighted: termWithInterestOnly?.isInterestOnly === true,
     },
   ]
 }
@@ -43,20 +61,28 @@ function buildRowsPerMonth(
   termsFromStart: Term[],
   termsWithInterestOnly: Term[],
 ): ScheduleTableRow[] {
-  return termsFromStart.map((termFromStart, index) => {
-    const termWithInterestOnly = termsWithInterestOnly[index]
+  const termCount = Math.max(
+    termsFromStart.length,
+    termsWithInterestOnly.length,
+  )
 
-    return {
-      key: `month-${termFromStart.termNumber}`,
-      label: formatInteger(termFromStart.termNumber),
-      subRows: comparedSubRows(termFromStart, termWithInterestOnly),
-    }
-  })
+  return Array.from({ length: termCount }, (_unused, index) => ({
+    key: `month-${index + 1}`,
+    label: formatInteger(index + 1),
+    subRows: comparedSubRows(
+      termsFromStart[index],
+      termsWithInterestOnly[index],
+    ),
+  }))
 }
 
-function sumOverYear(terms: Term[], startIndex: number): Term {
+function sumOverYear(terms: Term[], startIndex: number): Term | undefined {
   const termsInYear = terms.slice(startIndex, startIndex + 12)
   const lastTermInYear = termsInYear[termsInYear.length - 1]
+
+  if (lastTermInYear === undefined) {
+    return undefined
+  }
 
   return {
     termNumber: lastTermInYear.termNumber,
@@ -77,11 +103,12 @@ function buildRowsPerYear(
 ): ScheduleTableRow[] {
   const rows: ScheduleTableRow[] = []
 
-  for (
-    let startIndex = 0;
-    startIndex < termsFromStart.length;
-    startIndex += 12
-  ) {
+  const termCount = Math.max(
+    termsFromStart.length,
+    termsWithInterestOnly.length,
+  )
+
+  for (let startIndex = 0; startIndex < termCount; startIndex += 12) {
     const yearNumber = startIndex / 12 + 1
     const yearFromStart = sumOverYear(termsFromStart, startIndex)
     const yearWithInterestOnly = sumOverYear(termsWithInterestOnly, startIndex)
