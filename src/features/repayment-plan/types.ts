@@ -43,6 +43,7 @@ export interface RepaymentPlanState {
   setInterestRateAfterInterestOnlyPeriodPercent: (
     interestRateAfterInterestOnlyPeriodPercent: number,
   ) => void
+  setInterestRateForBothPeriods: (annualInterestRatePercent: number) => void
   setNumberOfTerms: (numberOfTerms: number) => void
   setNumberOfInterestOnlyTerms: (numberOfInterestOnlyTerms: number) => void
   resetToDefaults: () => void

@@ -9,8 +9,8 @@ import type { LoanParameters, RepaymentPlanState } from './types'
 
 export const DEFAULT_LOAN_PARAMETERS: LoanParameters = {
   principal: 3000000,
-  annualInterestRatePercent: 5,
-  interestRateAfterInterestOnlyPeriodPercent: 5,
+  annualInterestRatePercent: 5.1,
+  interestRateAfterInterestOnlyPeriodPercent: 5.1,
   numberOfTerms: 360,
   numberOfInterestOnlyTerms: 60,
 }
@@ -64,6 +64,14 @@ export function useRepaymentPlan(): RepaymentPlanState {
         clampLoanParameters({
           ...previous,
           interestRateAfterInterestOnlyPeriodPercent,
+        }),
+      ),
+    setInterestRateForBothPeriods: (annualInterestRatePercent) =>
+      setLoanParameters((previous) =>
+        clampLoanParameters({
+          ...previous,
+          annualInterestRatePercent,
+          interestRateAfterInterestOnlyPeriodPercent: annualInterestRatePercent,
         }),
       ),
     setNumberOfTerms: (numberOfTerms) =>

@@ -1,0 +1,28 @@
+.fields {
+  display: grid;
+  gap: 18px 20px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+@container (min-width: 440px) {
+  .fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.reset {
+  padding: 6px 12px;
+  border: 1px solid var(--hairline-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-secondary);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.reset:hover {
+  color: var(--ink-primary);
+  border-color: var(--axis-line);
+}
