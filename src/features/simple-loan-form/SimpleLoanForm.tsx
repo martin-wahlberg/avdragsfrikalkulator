@@ -86,7 +86,9 @@ export function SimpleLoanForm({
         />
 
         <NumberField
-          label="Løpetid"
+          label={
+            extendsTermByInterestOnlyPeriod ? 'Nedbetalingstid' : 'Løpetid'
+          }
           value={numberOfTerms / MONTHS_PER_YEAR}
           minimum={1 / MONTHS_PER_YEAR}
           step={1}
